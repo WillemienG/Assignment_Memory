@@ -2,30 +2,42 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class BoardDesigner {
+    int[] boardSize = determineWidthHeight();
 
-    public static WidthHeightDetermination determineWidthHeight() {
+    public BoardDesigner(int[] boardSize) {
+        this.boardSize = boardSize;
+    }
+
+    public int[] getBoardSize() {
+        return boardSize;
+    }
+
+    //TODO: Er iets op vinden zodat boardDimensions makkelijk oproepbaar is vanuit een andere klasse/methode/...
+    public static int[] determineWidthHeight() {
         Scanner scan = new Scanner(System.in);
-        boolean isValidLevel = true;
+        boolean isValidLevel = false;
         char chosenLevel = 'Z';
         int i = 1;
         while (!isValidLevel) {
             try {
                 System.out.println("At which difficulty level would you like to play? A: First level, B: Second level, C: Third level, D: Fourth level, E: Customized");
                 char scannedLevel = scan.next().charAt(0);
-                if (scannedLevel != 'A' || scannedLevel != 'B' || scannedLevel != 'C' || scannedLevel != 'D' || scannedLevel != 'E'){
-                    System.out.println("Enter one of the possibilities, going from A to E.");
-                    isValidLevel = false;
-                } else {
+                if (scannedLevel == 'A' || scannedLevel == 'B' || scannedLevel == 'C' || scannedLevel == 'D' || scannedLevel == 'E'){
                     chosenLevel = scannedLevel;
+                    isValidLevel = true;
+                } else {
+                    System.out.println("Enter one of the possibilities, going from A to E.");
                 }
             } catch (InputMismatchException ime) {
                 System.out.println("Enter one of the possibilities, going from A to E.");
                 isValidLevel = false;
+            } finally {
+                scan.close();
             }
             i = i + 1;
         }
         WidthHeightDetermination widthAndHeight;
-        //TODO
+
         switch (chosenLevel) {
             case 'A':
                 widthAndHeight = DifficultyLevel.FIRSTLEVEL;
@@ -45,7 +57,12 @@ public class BoardDesigner {
                 widthAndHeight = new CustomDifficultyLevel(customBoardDimensions[0], customBoardDimensions[1]);
                 break;
         }
-        return widthAndHeight;
+
+        //TODO: error dat het niet geïnitialiseerd is, maar hoe moet dat dan?
+        final int width = widthAndHeight.getWidth();
+        final int height = widthAndHeight.getHeight();
+        int[] boardDimensions = {width, height};
+        return boardDimensions;
     }
 
     public static int[] askBoardDimensions() {
@@ -56,7 +73,7 @@ public class BoardDesigner {
         //Board dimensions have to be put in array, method can't return multiple values
         int[] boardDimensions;
         boardDimensions = new int[2];
-        //As long as one of the conditions is not fulfilled, one of these booleans is set to false and while loop keeps going.
+        //As long as one of the conditions is not fulfilled, one of these booleans is set to false, so while loop is set to true and keeps going.
         while (!isValidNumber || !isEvenProduct) {
             try {
                 System.out.println("Enter number of rows");
@@ -91,6 +108,7 @@ public class BoardDesigner {
     }
 
     public static void main(String[] args) {
+        //Gewoon om even uit te testen of de scanner naar behoren werkt
         determineWidthHeight();
     }
 

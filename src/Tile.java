@@ -20,6 +20,7 @@ public class Tile {
         this.setDownsideValue(downsideValue);
     }
 
+    //Here complete file is read and put in a list
     public static List<String> readTileValues() {
         List<String> tileValues = new ArrayList<>();
         try {
@@ -30,8 +31,12 @@ public class Tile {
         return tileValues;
     }
 
-    public void setTilesForBoard() {
+    public void addTilesForBoard() {
         List<Tile> tilesForBoard = new ArrayList<>();
+        BoardDesigner needSize = new BoardDesigner(BoardDesigner.determineWidthHeight());
+        while (tilesForBoard.size() < needSize.getBoardSize()[0]*needSize.getBoardSize()[1] / 2) {
+            // Hier nu schrijven dat er tegels van de tileValues in een nieuwe list worden gezet die dan uiteindelijk gebruikt wordt voor het spel
+        }
     }
 
     //Don't know yet if this setter is really needed.
