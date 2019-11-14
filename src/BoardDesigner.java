@@ -2,7 +2,7 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class BoardDesigner {
-    int[] boardSize = determineWidthHeight();
+    int[] boardSize;
 
     public BoardDesigner(int[] boardSize) {
         this.boardSize = boardSize;
@@ -12,7 +12,6 @@ public class BoardDesigner {
         return boardSize;
     }
 
-    //TODO: Er iets op vinden zodat boardDimensions makkelijk oproepbaar is vanuit een andere klasse/methode/...
     public static int[] determineWidthHeight() {
         Scanner scan = new Scanner(System.in);
         boolean isValidLevel = false;
@@ -31,38 +30,60 @@ public class BoardDesigner {
             } catch (InputMismatchException ime) {
                 System.out.println("Enter one of the possibilities, going from A to E.");
                 isValidLevel = false;
-            } finally {
-                scan.close();
             }
             i = i + 1;
         }
         WidthHeightDetermination widthAndHeight;
-
+        int width;
+        int height;
+        int[] boardDimensions = new int[2];
         switch (chosenLevel) {
             case 'A':
                 widthAndHeight = DifficultyLevel.FIRSTLEVEL;
-                break;
+                width = widthAndHeight.getWidth();
+                height = widthAndHeight.getHeight();
+                boardDimensions[0] = width;
+                boardDimensions[1] = height;
+                return boardDimensions;
             case 'B':
                 widthAndHeight = DifficultyLevel.SECONDLEVEL;
-                break;
+                width = widthAndHeight.getWidth();
+                height = widthAndHeight.getHeight();
+                boardDimensions[0] = width;
+                boardDimensions[1] = height;
+                return boardDimensions;
             case 'C':
                 widthAndHeight = DifficultyLevel.THIRDLEVEL;
-                break;
+                width = widthAndHeight.getWidth();
+                height = widthAndHeight.getHeight();
+                boardDimensions[0] = width;
+                boardDimensions[1] = height;
+                return boardDimensions;
             case 'D':
                 widthAndHeight = DifficultyLevel.FOURTHLEVEL;
-                break;
+                width = widthAndHeight.getWidth();
+                height = widthAndHeight.getHeight();
+                boardDimensions[0] = width;
+                boardDimensions[1] = height;
+                return boardDimensions;
             case 'E':
                 //Only when player chooses a customized board, the askBoardDimensions() gets called. These created values then are used to set width and height
                 int[] customBoardDimensions = askBoardDimensions();
                 widthAndHeight = new CustomDifficultyLevel(customBoardDimensions[0], customBoardDimensions[1]);
-                break;
+                width = widthAndHeight.getWidth();
+                height = widthAndHeight.getHeight();
+                boardDimensions[0] = width;
+                boardDimensions[1] = height;
+                return boardDimensions;
+            default:
+                width = 2;
+                height = 2;
+                boardDimensions[0] = width;
+                boardDimensions[1] = height;
+                return boardDimensions;
         }
 
-        //TODO: error dat het niet geïnitialiseerd is, maar hoe moet dat dan?
-        final int width = widthAndHeight.getWidth();
-        final int height = widthAndHeight.getHeight();
-        int[] boardDimensions = {width, height};
-        return boardDimensions;
+
     }
 
     public static int[] askBoardDimensions() {
@@ -99,8 +120,6 @@ public class BoardDesigner {
                 scan.next();
                 //If scan.next() is not included in this catch-block, the scanner leaves invalid argument in scanner input stream without moving on, this creates an infinite loop.
                 System.out.println("You must enter a non-zero positive integer. Please try again.");
-            } finally {
-                scan.close();
             }
             i = i + 1;
         }
