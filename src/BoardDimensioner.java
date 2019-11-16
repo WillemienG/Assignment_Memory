@@ -3,6 +3,12 @@ import java.util.Scanner;
 
 public class BoardDimensioner {
 
+    /**
+     * This method determines the dimensions of game board, chosen by player(s).
+     * Player can choose between different difficulty levels or customize the board in method askBoardDimensions(). In that case, the given numbers must fulfill certain conditions, such as be strictly bigger than zero and give an even product.
+     * If conditions are not fulfilled, method starts over again.
+     * @return a 1by2 int-array with the width and height of the gameboard
+     */
     public static int[] determineWidthHeight() {
         Scanner scan = new Scanner(System.in);
         boolean isValidLevel = false;
@@ -73,8 +79,6 @@ public class BoardDimensioner {
                 boardDimensions[1] = width;
                 return boardDimensions;
         }
-
-
     }
 
     public static int[] askBoardDimensions() {
@@ -82,10 +86,8 @@ public class BoardDimensioner {
         boolean isValidNumber = false;
         boolean isEvenProduct = false;
         int i = 1;
-        //Board dimensions have to be put in array, method can't return multiple values
         int[] boardDimensions;
         boardDimensions = new int[2];
-        //As long as one of the conditions is not fulfilled, one of these booleans is set to false, so while loop is set to true and keeps going.
         while (!isValidNumber || !isEvenProduct) {
             try {
                 System.out.println("Enter number of rows");
@@ -93,28 +95,23 @@ public class BoardDimensioner {
                 System.out.println("Enter number of columns");
                 int width = scan.nextInt();
                 if (width % 2 != 0 && height % 2 != 0) {
-                    //Gives error when product width*height is odd (can't make tile pairs that way) and starts again.
                     System.out.println("At least one of the numbers must be even in order to make a valid play board. Please try again.");
                     isEvenProduct = false;
                 } else if (width <= 0 || height <= 0) {
-                    //Gives error when given value(s) <= 0 and starts again.
                     System.out.println("Make sure both values are strictly bigger than zero.");
                     isValidNumber = false;
                 } else {
                     isEvenProduct = true;
                     isValidNumber = true;
-                    //Sets boardDimensions to given values if all conditions are fulfilled.
                     boardDimensions[0] = height;
                     boardDimensions[1] = width;
                 }
             } catch (InputMismatchException ime) {
                 scan.next();
-                //If scan.next() is not included in this catch-block, the scanner leaves invalid argument in scanner input stream without moving on, this creates an infinite loop.
                 System.out.println("You must enter a non-zero positive integer. Please try again.");
             }
             i = i + 1;
         }
         return boardDimensions;
     }
-
 }
