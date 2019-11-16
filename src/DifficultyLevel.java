@@ -5,7 +5,7 @@ public enum DifficultyLevel implements WidthHeightDetermination {
     private int height;
 
     //Constructor that forces every Enum-level to have a width and height
-    DifficultyLevel(int width, int height) {
+    DifficultyLevel(int height, int width) {
         this.width = width;
         this.height = height;
     }

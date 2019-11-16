@@ -1,16 +1,7 @@
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public class BoardDesigner {
-    int[] boardSize;
-
-    public BoardDesigner(int[] boardSize) {
-        this.boardSize = boardSize;
-    }
-
-    public int[] getBoardSize() {
-        return boardSize;
-    }
+public class BoardDimensioner {
 
     public static int[] determineWidthHeight() {
         Scanner scan = new Scanner(System.in);
@@ -42,29 +33,29 @@ public class BoardDesigner {
                 widthAndHeight = DifficultyLevel.FIRSTLEVEL;
                 width = widthAndHeight.getWidth();
                 height = widthAndHeight.getHeight();
-                boardDimensions[0] = width;
-                boardDimensions[1] = height;
+                boardDimensions[0] = height;
+                boardDimensions[1] = width;
                 return boardDimensions;
             case 'B':
                 widthAndHeight = DifficultyLevel.SECONDLEVEL;
                 width = widthAndHeight.getWidth();
                 height = widthAndHeight.getHeight();
-                boardDimensions[0] = width;
-                boardDimensions[1] = height;
+                boardDimensions[0] = height;
+                boardDimensions[1] = width;
                 return boardDimensions;
             case 'C':
                 widthAndHeight = DifficultyLevel.THIRDLEVEL;
                 width = widthAndHeight.getWidth();
                 height = widthAndHeight.getHeight();
-                boardDimensions[0] = width;
-                boardDimensions[1] = height;
+                boardDimensions[0] = height;
+                boardDimensions[1] = width;
                 return boardDimensions;
             case 'D':
                 widthAndHeight = DifficultyLevel.FOURTHLEVEL;
                 width = widthAndHeight.getWidth();
                 height = widthAndHeight.getHeight();
-                boardDimensions[0] = width;
-                boardDimensions[1] = height;
+                boardDimensions[0] = height;
+                boardDimensions[1] = width;
                 return boardDimensions;
             case 'E':
                 //Only when player chooses a customized board, the askBoardDimensions() gets called. These created values then are used to set width and height
@@ -72,14 +63,14 @@ public class BoardDesigner {
                 widthAndHeight = new CustomDifficultyLevel(customBoardDimensions[0], customBoardDimensions[1]);
                 width = widthAndHeight.getWidth();
                 height = widthAndHeight.getHeight();
-                boardDimensions[0] = width;
-                boardDimensions[1] = height;
+                boardDimensions[0] = height;
+                boardDimensions[1] = width;
                 return boardDimensions;
             default:
                 width = 2;
                 height = 2;
-                boardDimensions[0] = width;
-                boardDimensions[1] = height;
+                boardDimensions[0] = height;
+                boardDimensions[1] = width;
                 return boardDimensions;
         }
 
@@ -113,8 +104,8 @@ public class BoardDesigner {
                     isEvenProduct = true;
                     isValidNumber = true;
                     //Sets boardDimensions to given values if all conditions are fulfilled.
-                    boardDimensions[0] = width;
-                    boardDimensions[1] = height;
+                    boardDimensions[0] = height;
+                    boardDimensions[1] = width;
                 }
             } catch (InputMismatchException ime) {
                 scan.next();
@@ -124,11 +115,6 @@ public class BoardDesigner {
             i = i + 1;
         }
         return boardDimensions;
-    }
-
-    public static void main(String[] args) {
-        //Gewoon om even uit te testen of de scanner naar behoren werkt
-        determineWidthHeight();
     }
 
 }

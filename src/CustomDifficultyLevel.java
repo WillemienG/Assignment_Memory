@@ -4,7 +4,7 @@ public class CustomDifficultyLevel implements WidthHeightDetermination {
     private final int width;
     private final int height;
 
-    CustomDifficultyLevel(int width, int height) {
+    CustomDifficultyLevel(int height, int width) {
         this.width = width;
         this.height = height;
     }

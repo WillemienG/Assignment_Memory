@@ -1,13 +1,38 @@
-
+import java.util.Collections;
 import java.util.List;
 
-//Zichtbaar bord: Allemaal Strings "Turn Me". Spelbord: effectieve Strings, bv met kleuren. Coördinaten worden gegeven voor 2 tegels, die worden vervangen door spelbord-equivalent en gelockt als ze gelijk zijn
 public class Board {
 
-    //This constructor is for making a new board to start the game with. TO DO: ADD DIFFICULTY LEVEL!
-    public Board(int width, int height, List<Tile> tilesForBoard) {
+    final int[] boardSize = BoardDimensioner.determineWidthHeight();
 
+    public Board() {
     }
 
+    public int[] getBoardSize() {
+        return boardSize;
+    }
+
+    static Board board1 = new Board();
+
+    public static String[][] createBoard() {
+        List<Tile> shuffledTiles = Tile.createTileObjects();
+        Collections.shuffle(shuffledTiles);
+        String[][] playBoard = new String[board1.getBoardSize()[0]][board1.getBoardSize()[1]];
+        int k = 0;
+        //Fill play board row by row
+        for (int i = 0; i < board1.getBoardSize()[0]; i++) {
+            System.out.println(" ");
+            for (int j = 0; j < board1.getBoardSize()[1]; j++) {
+                playBoard[i][j] = shuffledTiles.get(k).getUpsideValue();
+                k = k + 1;
+                System.out.print(playBoard[i][j] + " ");
+            }
+        }
+        return playBoard;
+    }
+
+    public static void main(String[] args) {
+        createBoard();
+    }
 
 }
