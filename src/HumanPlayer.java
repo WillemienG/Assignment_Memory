@@ -3,14 +3,14 @@ import java.util.Scanner;
 
 public class HumanPlayer extends Player {
 
-    String playerName = askPlayerName();
+    private String playerName;
 
     public HumanPlayer(int playerScore, String playerName) {
         super(playerScore);
-        this.playerName = playerName;
+        this.setPlayerName(playerName);
     }
 
-    public String askPlayerName() {
+    public static String askPlayerName() {
         Scanner scan = new Scanner(System.in);
         String playerName;
         System.out.println("Name of player:");
@@ -18,14 +18,22 @@ public class HumanPlayer extends Player {
         return playerName;
     }
 
+    public void setPlayerName(String playerName) {
+        this.playerName = playerName;
+    }
+
+    public String getPlayerName() {
+        return playerName;
+    }
+
     /**
      * This method lets a human player pick the two tiles he or she wants to turn. Player has to start over if given coordinates are out-of-bounds or negative or zero.
-     * @return a 1-by-2 array with coordinates of tile that has to be turned.
+     * @return a 1-by-2 integer-array with coordinates of tile that has to be turned.
      */
-    public int[] pickTiles () {
+    public int[] pickTiles (int height, int width) {
         Scanner scan = new Scanner(System.in);
         boolean isValidCo = false;
-        int[] pickedTilesCo = new int[2];
+        int[] pickedTileCo = new int[2];
         while (!isValidCo) {
             try {
                 System.out.println("Enter coordinates of first tile you want to turn, e.g. 2 <ENTER> 5");
@@ -33,11 +41,11 @@ public class HumanPlayer extends Player {
                 int widthCo = scan.nextInt();
                 if (heightCo <= 0 || widthCo <= 0) {
                     throw new IllegalArgumentException();
-                } else if (heightCo > Board.board1.getBoardSize()[0] || widthCo > Board.board1.getBoardSize()[1]) {
+                } else if (heightCo > height || widthCo > width) {
                     throw new IllegalArgumentException();
                 } else {
-                    pickedTilesCo[0] = heightCo;
-                    pickedTilesCo[1] = widthCo;
+                    pickedTileCo[0] = heightCo;
+                    pickedTileCo[1] = widthCo;
                     isValidCo = true;
                 }
             } catch (InputMismatchException ime) {
@@ -47,6 +55,12 @@ public class HumanPlayer extends Player {
                 System.out.println("Please enter non-zero positive coordinates within the range of your play board.");
             }
         }
-        return pickedTilesCo;
+        return pickedTileCo;
+    }
+
+    public void addScore() {
+        int oldScore = this.getPlayerScore();
+        int newScore = oldScore + 1;
+        this.setPlayerScore(newScore);
     }
 }

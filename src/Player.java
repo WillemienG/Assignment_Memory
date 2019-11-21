@@ -6,11 +6,13 @@ public abstract class Player {
         setPlayerScore(playerScore);
     }
 
-    public abstract int[] pickTiles();
+    public abstract int[] pickTiles(int height, int width);
 
     public int getPlayerScore() {
         return playerScore;
     }
+
+    public abstract void addScore();
 
     public void setPlayerScore(int playerScore) {
         this.playerScore = playerScore;

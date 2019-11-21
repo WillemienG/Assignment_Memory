@@ -1,90 +1,41 @@
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 public class Board {
 
-    final int[] boardSize = BoardDimensioner.determineWidthHeight();
-    Tile[][] playBoard;
+    final private Tile[][] tiles;
 
-    public Board() {
-    }
-    public Board(Tile[][] playBoard) {
-        this.playBoard = playBoard;
+    public Board(Tile[][] tiles) {
+    this.tiles = tiles;
     }
 
-    public int[] getBoardSize() {
-        return boardSize;
+    public int getHeight() {
+        int height = tiles.length;
+        return height;
     }
 
-    public Tile[][] getPlayBoard() {
-        return playBoard;
+    public int getWidth() {
+        int width = tiles[0].length;
+        return width;
     }
 
-    static Board board1 = new Board();
-
-    /**
-     * This method reads as much tile values (such as types of fruit) as needed for the size of the play board.
-     * @return a list with all possible tile-values
-     */
-    public static List<String> readTileValues() {
-        List<String> tileValues = new ArrayList<>();
-        int i = 0;
-        while (tileValues.size() < board1.getBoardSize()[0]*board1.getBoardSize()[1] / 2) {
-            try {
-                String tileValue = Files.readAllLines(Paths.get("Tile downsideValues"), Charset.defaultCharset()).get(i);
-                tileValues.add(tileValue);
-                i = i + 1;
-            } catch (IOException ioe) {
-                ioe.printStackTrace();
-            }
-        }
-        return tileValues;
+    public Tile[][] getTiles() {
+        return tiles;
     }
 
     /**
-     * This method creates tile-objects with the given tile-values from previous method. It always creates two identical tiles to form pairs for the matching game.
-     * @return a list with tile-objects.
+     * This method prints the created board to the screen. In every turn, when a player turns a tile, this method is called to show the result.
+     * Changes in printed board are made by setting boolean isTurned from false to true.
      */
-    public List<Tile> createTileObjects() {
-        List<Tile> tilesForBoard = new ArrayList<>();
-        List<String> tileValues = readTileValues();
-        int i = 0;
-        while (tilesForBoard.size() < tileValues.size() * 2) {
-            Tile tileA = new Tile(false,null,tileValues.get(i));
-            tilesForBoard.add(tileA);
-            tilesForBoard.add(tileA);
-            i = i + 1;
-        }
-        return tilesForBoard;
-    }
-
-    /**
-     * This method creates a board-matrix with tile-objects. Depending on whether a tile has already been turned, the upside value ("Turn me!") or downside value is printed.
-     * @return a board-matrix with tile-objects.
-     */
-    public Tile[][] createBoard() {
-        List<Tile> shuffledTiles = createTileObjects();
-        Collections.shuffle(shuffledTiles);
-        Tile[][] playBoard = new Tile[board1.getBoardSize()[0]][board1.getBoardSize()[1]];
+    public void printBoard() {
         int k = 0;
-        for (int i = 0; i < board1.getBoardSize()[0]; i++) {
+        for (int i = 0; i < this.getHeight(); i++) {
             System.out.println(" ");
-            for (int j = 0; j < board1.getBoardSize()[1]; j++) {
-                playBoard[i][j] = shuffledTiles.get(k);
-                k = k + 1;
-                if (playBoard[i][j].isTurned()) {
-                    System.out.print(playBoard[i][j].getDownsideValue() + " ");
+            for (int j = 0; j < this.getWidth(); j++) {
+                if (tiles[i][j].isTurned()) {
+                    System.out.print(tiles[i][j].getDownsideValue() + " ");
                 } else {
-                    System.out.print(playBoard[i][j].getUpsideValue() + " ");
+                    System.out.print(tiles[i][j].getUpsideValue() + " ");
                 }
+                k = k++;
             }
         }
-        return playBoard;
     }
-
 }

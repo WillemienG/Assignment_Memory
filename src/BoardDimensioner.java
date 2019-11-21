@@ -9,7 +9,7 @@ public class BoardDimensioner {
      * If conditions are not fulfilled, method starts over again.
      * @return a 1by2 int-array with the width and height of the gameboard
      */
-    public static int[] determineWidthHeight() {
+    public int[] determineWidthHeight() {
         Scanner scan = new Scanner(System.in);
         boolean isValidLevel = false;
         char chosenLevel = 'Z';
@@ -81,7 +81,7 @@ public class BoardDimensioner {
         }
     }
 
-    public static int[] askBoardDimensions() {
+    public int[] askBoardDimensions() {
         Scanner scan = new Scanner(System.in);
         boolean isValidNumber = false;
         boolean isEvenProduct = false;

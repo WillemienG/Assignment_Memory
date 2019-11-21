@@ -12,6 +12,7 @@ public class Tile {
         this.downsideValue = downsideValue;
     }
 
+
     public boolean turnTile() {
         if (isTurned) {
             isTurned = false;
@@ -19,6 +20,10 @@ public class Tile {
             isTurned = true;
         }
         return isTurned;
+    }
+
+    public void setTurned(boolean turned) {
+        isTurned = turned;
     }
 
     public boolean isTurned() {
