@@ -1,9 +1,13 @@
 public class Game {
 
     private Board board;
+    private Player player1;
+    private Player player2;
 
     public Game(Board board, Player player1, Player player2) {
         this.board = board;
+        this.player1 = player1;
+        this.player2 = player2;
     }
 
     public Board getBoard() {
@@ -19,6 +23,9 @@ public class Game {
         final int width = boardDimensioner.determineWidthHeight()[1];
         BoardDesigner boardDesigner = new BoardDesigner();
         this.board = boardDesigner.createBoard(height, width);
+        MakePlayers makePlayers = new MakePlayers();
+        this.player1 = makePlayers.makePlayer1();
+        this.player2 = makePlayers.makePlayer2();
     }
 
     /**
@@ -57,5 +64,10 @@ public class Game {
             }
             determineNextPlayer(players);
         }
+    }
+
+
+    public static void main(String[] args) {
+        Game game = new Game(Board board, Player player1, Player player2)
     }
 }
