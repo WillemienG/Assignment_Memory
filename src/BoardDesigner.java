@@ -39,10 +39,10 @@ public class BoardDesigner {
         List<String> tileValues = readTileValues(nbTiles);
         int i = 0;
         while (tilesForBoard.size() < tileValues.size() * 2) {
-            Tile tileA = new Tile(false,null,tileValues.get(i));
+            Tile tileA = new Tile(true,null,tileValues.get(i));
             tilesForBoard.add(tileA);
             tilesForBoard.add(tileA);
-            i = i++;
+            i = i + 1;
         }
         return tilesForBoard;
     }

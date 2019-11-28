@@ -36,10 +36,13 @@ public class HumanPlayer extends Player {
         int[] pickedTileCo = new int[2];
         while (!isValidCo) {
             try {
-                System.out.println("Enter coordinates of first tile you want to turn, e.g. 2 <ENTER> 5");
-                int heightCo = scan.nextInt();
-                int widthCo = scan.nextInt();
-                if (heightCo <= 0 || widthCo <= 0) {
+                System.out.print("\n");
+                System.out.println("Enter the row-coordinate of the tile you want to turn");
+                int heightCo = scan.nextInt() - 1;
+                System.out.print("\n");
+                System.out.println("Enter the column-coordinate of the tile you want to turn");
+                int widthCo = scan.nextInt() - 1;
+                if (heightCo < 0 || widthCo < 0) {
                     throw new IllegalArgumentException();
                 } else if (heightCo > height || widthCo > width) {
                     throw new IllegalArgumentException();

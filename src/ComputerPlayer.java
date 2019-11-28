@@ -11,9 +11,10 @@ public class ComputerPlayer extends Player{
      * @return a 1-by-2 integer-array with coordinates of tile that has to be turned.
      */
     public int[] pickTiles(int height, int width) {
+        System.out.println("Now the computer will pick 2 tiles.");
         int[] pickedTileCo = new int[2];
-        int heightCo = ThreadLocalRandom.current().nextInt(1, height + 1);
-        int widthCo = ThreadLocalRandom.current().nextInt(1, width + 1);
+        int heightCo = ThreadLocalRandom.current().nextInt(1, height );
+        int widthCo = ThreadLocalRandom.current().nextInt(1, width);
         pickedTileCo[0] = heightCo;
         pickedTileCo[1] = widthCo;
 
