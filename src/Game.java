@@ -3,11 +3,13 @@ public class Game {
     private Board board;
     private Player player1;
     private Player player2;
+    private char difficultyLevel;
 
-    public Game(Board board, Player player1, Player player2) {
+    public Game(Board board, Player player1, Player player2, char difficultyLevel) {
         this.board = board;
         this.player1 = player1;
         this.player2 = player2;
+        this.difficultyLevel = difficultyLevel;
     }
 
     public Game() {
@@ -25,6 +27,7 @@ public class Game {
         final int[] dimensions = boardDimensioner.determineWidthHeight();
         final int height = dimensions[0];
         final int width = dimensions[1];
+        final char difficultyLevel = boardDimensioner.askDifficultyLevel();
         BoardDesigner boardDesigner = new BoardDesigner();
         this.board = boardDesigner.createBoard(height, width);
         MakePlayers makePlayers = new MakePlayers();
@@ -124,5 +127,7 @@ public class Game {
         Player[] players = {player1, player2};
         myGame.playTurn(players);
         myGame.determineWinner(players);
+        HighscoreUpdater highscoreUpdater = new HighscoreUpdater();
+        highscoreUpdater.updateHighscores(players,myGame.difficultyLevel);
     }
 }

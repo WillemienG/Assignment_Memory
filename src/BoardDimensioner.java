@@ -9,7 +9,7 @@ public class BoardDimensioner {
      * If conditions are not fulfilled, method starts over again.
      * @return a 1by2 int-array with the width and height of the gameboard
      */
-    public int[] determineWidthHeight() {
+    public char askDifficultyLevel() {
         Scanner scan = new Scanner(System.in);
         boolean isValidLevel = false;
         char chosenLevel = 'Z';
@@ -18,7 +18,7 @@ public class BoardDimensioner {
             try {
                 System.out.println("At which difficulty level would you like to play? A: First level, B: Second level, C: Third level, D: Fourth level, E: Customized");
                 char scannedLevel = scan.next().charAt(0);
-                if (scannedLevel == 'A' || scannedLevel == 'B' || scannedLevel == 'C' || scannedLevel == 'D' || scannedLevel == 'E'){
+                if (scannedLevel == 'A' || scannedLevel == 'B' || scannedLevel == 'C' || scannedLevel == 'D' || scannedLevel == 'E') {
                     chosenLevel = scannedLevel;
                     isValidLevel = true;
                 } else {
@@ -30,10 +30,15 @@ public class BoardDimensioner {
             }
             i = i + 1;
         }
+        return chosenLevel;
+    }
+
+    public int[] determineWidthHeight() {
         WidthHeightDetermination widthAndHeight;
         int width;
         int height;
         int[] boardDimensions = new int[2];
+        char chosenLevel = askDifficultyLevel();
         switch (chosenLevel) {
             case 'A':
                 widthAndHeight = DifficultyLevel.FIRSTLEVEL;
