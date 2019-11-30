@@ -26,45 +26,53 @@ public class HighscoreUpdater {
         return highscores;
     }
 
-    public List<HighscoreEntry> updateHighscores(Player[] players, char difficultyLevel) {
-        List<HighscoreEntry> highscores = readHighscores();
-        int score1 = players[0].getPlayerScore();
-        int score2 = players[1].getPlayerScore();
+    public List<HighscoreEntry> compareScore(Player player, char difficultyLevel, List<HighscoreEntry> highscores) {
+        int score = player.getPlayerScore();
+        boolean isHighscore = false;
         for (int i = highscores.size() - 1 ; i >= 0; i--) {
-            if (!players[0].getPlayerName().equals("the computer")) {
-                if (score1 > highscores.get(i).getPlayerScore() && score1 < highscores.get(i-1).getPlayerScore() ) {
-                    HighscoreEntry highscoreEntry1 = new HighscoreEntry(players[0].getPlayerName(),score1,difficultyLevel);
+            if (!player.getPlayerName().equals("the computer")) {
+                if (score > highscores.get(i).getPlayerScore() && score < highscores.get(i - 1).getPlayerScore()) {
+                    HighscoreEntry highscoreEntry1 = new HighscoreEntry(player.getPlayerName(), score, difficultyLevel);
                     highscores.add(i, highscoreEntry1);
-                }
-            } else if (!players[1].getPlayerName().equals("the computer")) {
-                if (score2 > highscores.get(i).getPlayerScore() && score2 < highscores.get(i-1).getPlayerScore() ) {
-                    HighscoreEntry highscoreEntry2 = new HighscoreEntry(players[1].getPlayerName(),score2,difficultyLevel);
-                    highscores.add(i, highscoreEntry2);
+                    isHighscore = true;
                 }
             }
         }
-        if (highscores.size() > 100) {
-            List<HighscoreEntry> highscoresNew = highscores.subList(0, 99);
-            return highscoresNew;
+        if (!isHighscore) {
+            HighscoreEntry highscoreEntry1 = new HighscoreEntry(player.getPlayerName(), score, difficultyLevel);
+            highscores.add(highscoreEntry1);
+        }
+        return highscores;
+    }
+
+    public List<HighscoreEntry> updateHighscores(Player[] players, char difficultyLevel) {
+        List<HighscoreEntry> highscores0 = readHighscores();
+        List<HighscoreEntry> highscores1 = compareScore(players[0], difficultyLevel, highscores0);
+        List<HighscoreEntry> highscores2 = compareScore(players[1], difficultyLevel, highscores1);
+
+        if (highscores2.size() > 100) {
+            List<HighscoreEntry> highscores3 = highscores2.subList(0, 99);
+            return highscores3;
         } else {
-            return highscores;
+            return highscores2;
         }
     }
 
-    public void writeHighScores(Player[] players,  char difficultyLevel) {
+    public void writeHighscores(Player[] players,  char difficultyLevel) {
         List<HighscoreEntry> highscores = updateHighscores(players, difficultyLevel);
+        try (FileWriter csvWriter = new FileWriter("Highscores.csv")) {
         for(int i = 0; i < highscores.size(); i++) {
             String playerName = highscores.get(i).getPlayerName();
             String playerScore = Integer.toString(highscores.get(i).getPlayerScore());
             String diffLevel = Character.toString(highscores.get(i).getDifficultyLevel());
             String[] scoreData = {playerName, playerScore, diffLevel};
 
-            try (FileWriter csvWriter = new FileWriter("Highscores.csv")) {
-                csvWriter.append(String.join(",", scoreData));
-                csvWriter.append("\n");
-            } catch (IOException ioe) {
-                System.err.println("Something went wrong");
+            csvWriter.append(String.join(",", scoreData));
+            csvWriter.append("\n");
+            csvWriter.flush();
             }
+        } catch (IOException ioe) {
+            System.err.println("Something went wrong");
         }
     }
 }

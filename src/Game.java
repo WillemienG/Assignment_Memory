@@ -128,6 +128,6 @@ public class Game {
         myGame.playTurn(players);
         myGame.determineWinner(players);
         HighscoreUpdater highscoreUpdater = new HighscoreUpdater();
-        highscoreUpdater.updateHighscores(players,myGame.difficultyLevel);
+        highscoreUpdater.writeHighscores(players,myGame.difficultyLevel);
     }
 }
