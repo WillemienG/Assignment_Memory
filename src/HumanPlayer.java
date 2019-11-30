@@ -6,8 +6,7 @@ public class HumanPlayer extends Player {
     private String playerName;
 
     public HumanPlayer(int playerScore, String playerName) {
-        super(playerScore);
-        this.setPlayerName(playerName);
+        super(playerScore, playerName);
     }
 
     public static String askPlayerName() {
@@ -15,14 +14,6 @@ public class HumanPlayer extends Player {
         String playerName;
         System.out.println("Name of player:");
         playerName = scan.nextLine();
-        return playerName;
-    }
-
-    public void setPlayerName(String playerName) {
-        this.playerName = playerName;
-    }
-
-    public String getPlayerName() {
         return playerName;
     }
 
@@ -43,9 +34,9 @@ public class HumanPlayer extends Player {
                 System.out.println("Enter the column-coordinate of the tile you want to turn");
                 int widthCo = scan.nextInt() - 1;
                 if (heightCo < 0 || widthCo < 0) {
-                    throw new IllegalArgumentException();
+                    throw new ArrayIndexOutOfBoundsException();
                 } else if (heightCo > height || widthCo > width) {
-                    throw new IllegalArgumentException();
+                    throw new ArrayIndexOutOfBoundsException();
                 } else {
                     pickedTileCo[0] = heightCo;
                     pickedTileCo[1] = widthCo;
@@ -54,7 +45,7 @@ public class HumanPlayer extends Player {
             } catch (InputMismatchException ime) {
                 scan.next();
                 System.out.println("These are not valid coordinates. Please try again.");
-            } catch (IllegalArgumentException iae) {
+            } catch (ArrayIndexOutOfBoundsException aioe) {
                 System.out.println("Please enter non-zero positive coordinates within the range of your play board.");
             }
         }

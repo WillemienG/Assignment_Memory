@@ -22,7 +22,7 @@ public class BoardDesigner {
         }
         List<String> tileValues = new ArrayList<>();
         int i = 0;
-        while (tileValues.size() < nbTiles) {
+        while (tileValues.size() < nbTiles / 2) {
                 String tileValue = allTileValuesFromFile.get(i);
                 tileValues.add(tileValue);
                 i = i + 1;
@@ -39,9 +39,10 @@ public class BoardDesigner {
         List<String> tileValues = readTileValues(nbTiles);
         int i = 0;
         while (tilesForBoard.size() < tileValues.size() * 2) {
-            Tile tileA = new Tile(true,null,tileValues.get(i));
+            Tile tileA = new Tile(false,null,tileValues.get(i));
             tilesForBoard.add(tileA);
-            tilesForBoard.add(tileA);
+            Tile tileB = new Tile(false,null,tileValues.get(i));
+            tilesForBoard.add(tileB);
             i = i + 1;
         }
         return tilesForBoard;

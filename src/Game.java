@@ -50,40 +50,79 @@ public class Game {
 
     public void playTurn(Player[] players) {
         int nbTilesMatched = 0;
+        int[] pickedTileCo1 = {0,0};
+        int[] pickedTileCo2 = {0,0};
+        Tile tileToTurn1 = new Tile(false,null,"whatever");
         while (nbTilesMatched < board.getHeight() * board.getWidth() / 2) {
-            int[] pickedTileCo1 = players[0].pickTiles(board.getHeight(), board.getWidth());
-            Tile tileToTurn1 = board.getTiles()[pickedTileCo1[0]][pickedTileCo1[1]];
-            tileToTurn1.setTurned(true);
-            System.out.print("\n");
-            board.printBoard();
-            System.out.print("\n");
-
-            int[] pickedTileCo2 = players[0].pickTiles(board.getHeight(), board.getWidth());
-            Tile tileToTurn2 = board.getTiles()[pickedTileCo2[0]][pickedTileCo2[1]];
-            tileToTurn2.setTurned(true);
-            System.out.print("\n");
-            board.printBoard();
-            System.out.print("\n");
-            if (tileToTurn1.getDownsideValue().equals(tileToTurn2.getDownsideValue())) {
-                nbTilesMatched += 1;
-                players[0].addScore();
-            } else {
-                tileToTurn1.setTurned(false);
-                tileToTurn2.setTurned(false);
-                System.out.print("\n");
-                board.printBoard();
-                System.out.print("\n");
+            boolean isTurnable1 = false;
+            while (!isTurnable1) {
+                pickedTileCo1 = players[0].pickTiles(board.getHeight(), board.getWidth());
+                tileToTurn1 = board.getTiles()[pickedTileCo1[0]][pickedTileCo1[1]];
+                if (tileToTurn1.isTurned()) {
+                    System.out.println("This tile can't be turned anymore. Try again.");
+                } else {
+                    tileToTurn1.setTurned(true);
+                    board.printBoard();
+                    isTurnable1 = true;
+                }
             }
-            determineNextPlayer(players);
+            boolean isTurnable2 = false;
+            while (!isTurnable2) {
+                boolean isOtherTile = false;
+                while (!isOtherTile) {
+                    pickedTileCo2 = players[0].pickTiles(board.getHeight(), board.getWidth());
+                    if (pickedTileCo2[0] == pickedTileCo1[0] && pickedTileCo2[1] == pickedTileCo1[1]) {
+                        System.out.println("You can't pick the same tile twice. Try again");
+                    } else {
+                        isOtherTile = true;
+                        Tile tileToTurn2 = board.getTiles()[pickedTileCo2[0]][pickedTileCo2[1]];
+                        if (tileToTurn2.isTurned()) {
+                            System.out.println("This tile can't be turned anymore. Try again.");
+                        } else {
+                            tileToTurn2.setTurned(true);
+                            board.printBoard();
+                            isTurnable2 = true;
+                            if (tileToTurn1.getDownsideValue().equals(tileToTurn2.getDownsideValue())) {
+                                nbTilesMatched += 1;
+                                players[0].addScore();
+                            } else {
+                                tileToTurn1.setTurned(false);
+                                tileToTurn2.setTurned(false);
+                                board.printBoard();
+                            }
+                            System.out.print("\n");
+                            System.out.println(players[0].getPlayerName() + " now has a score of " + players[0].getPlayerScore() + ".");
+                            determineNextPlayer(players);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public void determineWinner(Player[] players) {
+        String winner;
+        int score1 = players[0].getPlayerScore();
+        int score2 = players[1].getPlayerScore();
+        System.out.print("\n");
+        if (score1 > score2) {
+            winner = players[0].getPlayerName();
+            System.out.println("The winner of this game is " + winner +", congratulations! You ended with a score of " + score1 + ".");
+        } else if (score1 == score2) {
+            System.out.println("You both did well in this game and finished with an ex aequo of " + score1 + ".");
+        } else if (score1 < score2) {
+            winner = players[1].getPlayerName();
+            System.out.println("The winner of this game is " + winner +", congratulations! You ended with a score of " + score2 + ".");
         }
     }
 
     public static void main(String[] args) {
-        Game mijnSpelletje = new Game();
-        mijnSpelletje.prepareGame();
-        Player player1 = mijnSpelletje.player1;
-        Player player2 = mijnSpelletje.player2;
+        Game myGame = new Game();
+        myGame.prepareGame();
+        Player player1 = myGame.player1;
+        Player player2 = myGame.player2;
         Player[] players = {player1, player2};
-        mijnSpelletje.playTurn(players);
+        myGame.playTurn(players);
+        myGame.determineWinner(players);
     }
 }

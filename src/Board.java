@@ -25,8 +25,9 @@ public class Board {
      * Changes in printed board are made by setting boolean isTurned from false to true.
      */
     public void printBoard() {
-        int k = 0;
+        System.out.print("\n");
         for (int i = 0; i < this.getHeight(); i++) {
+            System.out.print("\n");
             System.out.println(" ");
             for (int j = 0; j < this.getWidth(); j++) {
                 if (tiles[i][j].isTurned()) {
@@ -34,8 +35,8 @@ public class Board {
                 } else {
                     System.out.print(tiles[i][j].getUpsideValue() + " ");
                 }
-                k = k++;
             }
         }
+        System.out.print("\n");
     }
 }

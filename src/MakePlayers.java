@@ -37,7 +37,7 @@ public class MakePlayers {
             player2.setPlayerName(HumanPlayer.askPlayerName());
             return player2;
         } else {
-            ComputerPlayer player2 = new ComputerPlayer(0);
+            ComputerPlayer player2 = new ComputerPlayer(0, "the computer");
             return player2;
         }
     }
