@@ -33,13 +33,13 @@ public class BoardDimensioner {
         return chosenLevel;
     }
 
-    public int[] determineWidthHeight() {
+    public int[] determineWidthHeight(char chosenLevel) {
         WidthHeightDetermination widthAndHeight;
         int width;
         int height;
         int[] boardDimensions = new int[2];
-        char chosenLevel = askDifficultyLevel();
         switch (chosenLevel) {
+            //TODO: van deze 4 regels kan je ook een methode maken die een DifficultyLevel als argument heeft en dan een int[] terug geeft. Spaart wat regels!
             case 'A':
                 widthAndHeight = DifficultyLevel.FIRSTLEVEL;
                 width = widthAndHeight.getWidth();

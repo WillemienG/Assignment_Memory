@@ -3,9 +3,12 @@ public class HighscoreEntry {
     int playerScore;
     char difficultyLevel;
 
+
+
     public HighscoreEntry(String playerName, int playerScore, char difficultyLevel) {
         this.setPlayerName(playerName);
         this.setPlayerScore(playerScore);
+        this.setDifficultyLevel(difficultyLevel);
     }
 
     public String getPlayerName() {
@@ -26,5 +29,9 @@ public class HighscoreEntry {
 
     public char getDifficultyLevel() {
         return difficultyLevel;
+    }
+
+    public void setDifficultyLevel(char difficultyLevel) {
+        this.difficultyLevel = difficultyLevel;
     }
 }

@@ -24,10 +24,10 @@ public class Game {
      */
     public void prepareGame() {
         BoardDimensioner boardDimensioner = new BoardDimensioner();
-        final int[] dimensions = boardDimensioner.determineWidthHeight();
+        final char difficultyLevel = boardDimensioner.askDifficultyLevel();
+        final int[] dimensions = boardDimensioner.determineWidthHeight(difficultyLevel);
         final int height = dimensions[0];
         final int width = dimensions[1];
-        final char difficultyLevel = boardDimensioner.askDifficultyLevel();
         BoardDesigner boardDesigner = new BoardDesigner();
         this.board = boardDesigner.createBoard(height, width);
         MakePlayers makePlayers = new MakePlayers();

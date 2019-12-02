@@ -29,18 +29,18 @@ public class HighscoreUpdater {
     public List<HighscoreEntry> compareScore(Player player, char difficultyLevel, List<HighscoreEntry> highscores) {
         int score = player.getPlayerScore();
         boolean isHighscore = false;
-        for (int i = highscores.size() - 1 ; i >= 0; i--) {
-            if (!player.getPlayerName().equals("the computer")) {
+        if (!player.getPlayerName().equals("the computer")) {
+            for (int i = highscores.size() - 1; i >= 0; i--) {
                 if (score > highscores.get(i).getPlayerScore() && score < highscores.get(i - 1).getPlayerScore()) {
                     HighscoreEntry highscoreEntry1 = new HighscoreEntry(player.getPlayerName(), score, difficultyLevel);
                     highscores.add(i, highscoreEntry1);
                     isHighscore = true;
                 }
             }
-        }
-        if (!isHighscore) {
-            HighscoreEntry highscoreEntry1 = new HighscoreEntry(player.getPlayerName(), score, difficultyLevel);
-            highscores.add(highscoreEntry1);
+            if (!isHighscore) {
+                HighscoreEntry highscoreEntry1 = new HighscoreEntry(player.getPlayerName(), score, difficultyLevel);
+                highscores.add(highscoreEntry1);
+            }
         }
         return highscores;
     }
@@ -61,16 +61,16 @@ public class HighscoreUpdater {
     public void writeHighscores(Player[] players,  char difficultyLevel) {
         List<HighscoreEntry> highscores = updateHighscores(players, difficultyLevel);
         try (FileWriter csvWriter = new FileWriter("Highscores.csv")) {
-        for(int i = 0; i < highscores.size(); i++) {
-            String playerName = highscores.get(i).getPlayerName();
-            String playerScore = Integer.toString(highscores.get(i).getPlayerScore());
-            String diffLevel = Character.toString(highscores.get(i).getDifficultyLevel());
-            String[] scoreData = {playerName, playerScore, diffLevel};
+            for(int i = 0; i < highscores.size(); i++) {
+                String playerName = highscores.get(i).getPlayerName();
+                String playerScore = Integer.toString(highscores.get(i).getPlayerScore());
+                String diffLevel = Character.toString(highscores.get(i).getDifficultyLevel());
+                String[] scoreData = {playerName, playerScore, diffLevel};
 
-            csvWriter.append(String.join(",", scoreData));
-            csvWriter.append("\n");
-            csvWriter.flush();
+                csvWriter.append(String.join(",", scoreData));
+                csvWriter.append("\n");
             }
+            csvWriter.flush();
         } catch (IOException ioe) {
             System.err.println("Something went wrong");
         }
