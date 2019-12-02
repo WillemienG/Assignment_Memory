@@ -1,11 +1,11 @@
 public class HighscoreEntry {
     String playerName;
     int playerScore;
-    char difficultyLevel;
+    String difficultyLevel;
 
 
 
-    public HighscoreEntry(String playerName, int playerScore, char difficultyLevel) {
+    public HighscoreEntry(String playerName, int playerScore, String difficultyLevel) {
         this.setPlayerName(playerName);
         this.setPlayerScore(playerScore);
         this.setDifficultyLevel(difficultyLevel);
@@ -27,11 +27,11 @@ public class HighscoreEntry {
         this.playerScore = playerScore;
     }
 
-    public char getDifficultyLevel() {
+    public String getDifficultyLevel() {
         return difficultyLevel;
     }
 
-    public void setDifficultyLevel(char difficultyLevel) {
+    public void setDifficultyLevel(String difficultyLevel) {
         this.difficultyLevel = difficultyLevel;
     }
 }

@@ -9,16 +9,16 @@ public class BoardDimensioner {
      * If conditions are not fulfilled, method starts over again.
      * @return a 1by2 int-array with the width and height of the gameboard
      */
-    public char askDifficultyLevel() {
+    public String askDifficultyLevel() {
         Scanner scan = new Scanner(System.in);
         boolean isValidLevel = false;
-        char chosenLevel = 'Z';
+        String chosenLevel = "Z";
         int i = 1;
         while (!isValidLevel) {
             try {
                 System.out.println("At which difficulty level would you like to play? A: First level, B: Second level, C: Third level, D: Fourth level, E: Customized");
-                char scannedLevel = scan.next().charAt(0);
-                if (scannedLevel == 'A' || scannedLevel == 'B' || scannedLevel == 'C' || scannedLevel == 'D' || scannedLevel == 'E') {
+                String scannedLevel = scan.next();
+                if (scannedLevel.equals("A") || scannedLevel.equals("B") || scannedLevel.equals("C") || scannedLevel.equals("D") || scannedLevel.equals("E")) {
                     chosenLevel = scannedLevel;
                     isValidLevel = true;
                 } else {
@@ -33,42 +33,42 @@ public class BoardDimensioner {
         return chosenLevel;
     }
 
-    public int[] determineWidthHeight(char chosenLevel) {
+    public int[] determineWidthHeight(String chosenLevel) {
         WidthHeightDetermination widthAndHeight;
         int width;
         int height;
         int[] boardDimensions = new int[2];
         switch (chosenLevel) {
             //TODO: van deze 4 regels kan je ook een methode maken die een DifficultyLevel als argument heeft en dan een int[] terug geeft. Spaart wat regels!
-            case 'A':
+            case "A":
                 widthAndHeight = DifficultyLevel.FIRSTLEVEL;
                 width = widthAndHeight.getWidth();
                 height = widthAndHeight.getHeight();
                 boardDimensions[0] = height;
                 boardDimensions[1] = width;
                 return boardDimensions;
-            case 'B':
+            case "B":
                 widthAndHeight = DifficultyLevel.SECONDLEVEL;
                 width = widthAndHeight.getWidth();
                 height = widthAndHeight.getHeight();
                 boardDimensions[0] = height;
                 boardDimensions[1] = width;
                 return boardDimensions;
-            case 'C':
+            case "C":
                 widthAndHeight = DifficultyLevel.THIRDLEVEL;
                 width = widthAndHeight.getWidth();
                 height = widthAndHeight.getHeight();
                 boardDimensions[0] = height;
                 boardDimensions[1] = width;
                 return boardDimensions;
-            case 'D':
+            case "D":
                 widthAndHeight = DifficultyLevel.FOURTHLEVEL;
                 width = widthAndHeight.getWidth();
                 height = widthAndHeight.getHeight();
                 boardDimensions[0] = height;
                 boardDimensions[1] = width;
                 return boardDimensions;
-            case 'E':
+            case "E":
                 //Only when player chooses a customized board, the askBoardDimensions() gets called. These created values then are used to set width and height
                 int[] customBoardDimensions = askBoardDimensions();
                 widthAndHeight = new CustomDifficultyLevel(customBoardDimensions[0], customBoardDimensions[1]);

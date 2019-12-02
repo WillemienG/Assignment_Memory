@@ -3,9 +3,9 @@ public class Game {
     private Board board;
     private Player player1;
     private Player player2;
-    private char difficultyLevel;
+    private String difficultyLevel;
 
-    public Game(Board board, Player player1, Player player2, char difficultyLevel) {
+    public Game(Board board, Player player1, Player player2, String difficultyLevel) {
         this.board = board;
         this.player1 = player1;
         this.player2 = player2;
@@ -22,9 +22,9 @@ public class Game {
     /**
      * This method fixes the dimensions of the memory game for this round and makes a board-object with it.
      */
-    public void prepareGame() {
+    private void prepareGame() {
         BoardDimensioner boardDimensioner = new BoardDimensioner();
-        final char difficultyLevel = boardDimensioner.askDifficultyLevel();
+        this.difficultyLevel = boardDimensioner.askDifficultyLevel();
         final int[] dimensions = boardDimensioner.determineWidthHeight(difficultyLevel);
         final int height = dimensions[0];
         final int width = dimensions[1];
@@ -43,7 +43,7 @@ public class Game {
      * @param players is a Player-array with the two current Player-objects.
      * @return a 1-by-2-Player-array in which position[0] = player who gets to play next.
      */
-    public Player[] determineNextPlayer(Player[] players) {
+    private Player[] determineNextPlayer(Player[] players) {
         Player temp1 = players[0];
         Player temp2 = players[1];
         players[0] = temp2;
@@ -51,7 +51,7 @@ public class Game {
         return players;
     }
 
-    public void playTurn(Player[] players) {
+    private void playTurn(Player[] players) {
         int nbTilesMatched = 0;
         int[] pickedTileCo1 = {0,0};
         int[] pickedTileCo2 = {0,0};
@@ -103,7 +103,7 @@ public class Game {
         }
     }
 
-    public void determineWinner(Player[] players) {
+    private void determineWinner(Player[] players) {
         String winner;
         int score1 = players[0].getPlayerScore();
         int score2 = players[1].getPlayerScore();

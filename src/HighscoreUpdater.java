@@ -8,7 +8,7 @@ import static java.lang.Integer.parseInt;
 
 public class HighscoreUpdater {
 
-    public List<HighscoreEntry> readHighscores() {
+    private List<HighscoreEntry> readHighscores() {
         List<HighscoreEntry> highscores = new ArrayList<>();
         try (Scanner scan = new Scanner(new FileReader("Highscores.csv"))) {
             while (scan.hasNext()) {
@@ -16,7 +16,7 @@ public class HighscoreUpdater {
                 String[] scoreValues = scoreData.split(",");
                 String playerName = scoreValues[0];
                 int playerScore = parseInt(scoreValues[1]);
-                char difficultyLevel = scoreValues[2].charAt(0);
+                String difficultyLevel = scoreValues[2];
                 HighscoreEntry highscoreEntry = new HighscoreEntry(playerName,playerScore,difficultyLevel);
                 highscores.add(highscoreEntry);
             }
@@ -26,7 +26,7 @@ public class HighscoreUpdater {
         return highscores;
     }
 
-    public List<HighscoreEntry> compareScore(Player player, char difficultyLevel, List<HighscoreEntry> highscores) {
+    private List<HighscoreEntry> compareScore(Player player, String difficultyLevel, List<HighscoreEntry> highscores) {
         int score = player.getPlayerScore();
         boolean isHighscore = false;
         if (!player.getPlayerName().equals("the computer")) {
@@ -45,7 +45,7 @@ public class HighscoreUpdater {
         return highscores;
     }
 
-    public List<HighscoreEntry> updateHighscores(Player[] players, char difficultyLevel) {
+    private List<HighscoreEntry> updateHighscores(Player[] players, String difficultyLevel) {
         List<HighscoreEntry> highscores0 = readHighscores();
         List<HighscoreEntry> highscores1 = compareScore(players[0], difficultyLevel, highscores0);
         List<HighscoreEntry> highscores2 = compareScore(players[1], difficultyLevel, highscores1);
@@ -58,13 +58,13 @@ public class HighscoreUpdater {
         }
     }
 
-    public void writeHighscores(Player[] players,  char difficultyLevel) {
+    public void writeHighscores(Player[] players,  String difficultyLevel) {
         List<HighscoreEntry> highscores = updateHighscores(players, difficultyLevel);
         try (FileWriter csvWriter = new FileWriter("Highscores.csv")) {
             for(int i = 0; i < highscores.size(); i++) {
                 String playerName = highscores.get(i).getPlayerName();
                 String playerScore = Integer.toString(highscores.get(i).getPlayerScore());
-                String diffLevel = Character.toString(highscores.get(i).getDifficultyLevel());
+                String diffLevel = highscores.get(i).getDifficultyLevel();
                 String[] scoreData = {playerName, playerScore, diffLevel};
 
                 csvWriter.append(String.join(",", scoreData));
