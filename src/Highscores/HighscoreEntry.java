@@ -1,3 +1,5 @@
+package Highscores;
+
 public class HighscoreEntry {
     String playerName;
     int playerScore;

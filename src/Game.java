@@ -1,3 +1,11 @@
+import Board.Board;
+import Board.BoardDimensioner;
+import Board.BoardDesigner;
+import Board.Tile;
+import Highscores.HighscoreUpdater;
+import Players.MakePlayers;
+import Players.Player;
+
 public class Game {
 
     private Board board;
@@ -38,10 +46,10 @@ public class Game {
 
     /**
      * This method swaps the two players of the game, so the turn is passed from one player to the other.
-     * Both players are temporarily stored in temp-objects and then inserted in a Player-array again, but in a swapped order.
+     * Both players are temporarily stored in temp-objects and then inserted in a Players.Player-array again, but in a swapped order.
      *
-     * @param players is a Player-array with the two current Player-objects.
-     * @return a 1-by-2-Player-array in which position[0] = player who gets to play next.
+     * @param players is a Players.Player-array with the two current Players.Player-objects.
+     * @return a 1-by-2-Players.Player-array in which position[0] = player who gets to play next.
      */
     private Player[] determineNextPlayer(Player[] players) {
         Player temp1 = players[0];
@@ -51,7 +59,7 @@ public class Game {
         return players;
     }
 
-    private void playTurn(Player[] players) {
+    private void playGame(Player[] players) {
         int nbTilesMatched = 0;
         int[] pickedTileCo1 = {0,0};
         int[] pickedTileCo2 = {0,0};
@@ -125,7 +133,7 @@ public class Game {
         Player player1 = myGame.player1;
         Player player2 = myGame.player2;
         Player[] players = {player1, player2};
-        myGame.playTurn(players);
+        myGame.playGame(players);
         myGame.determineWinner(players);
         HighscoreUpdater highscoreUpdater = new HighscoreUpdater();
         highscoreUpdater.writeHighscores(players,myGame.difficultyLevel);

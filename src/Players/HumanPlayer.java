@@ -1,3 +1,5 @@
+package Players;
+
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -18,7 +20,7 @@ public class HumanPlayer extends Player {
     }
 
     /**
-     * This method lets a human player pick the two tiles he or she wants to turn. Player has to start over if given coordinates are out-of-bounds or negative or zero.
+     * This method lets a human player pick the two tiles he or she wants to turn. Players.Player has to start over if given coordinates are out-of-bounds or negative or zero.
      * @return a 1-by-2 integer-array with coordinates of tile that has to be turned.
      */
     public int[] pickTiles (int height, int width) {

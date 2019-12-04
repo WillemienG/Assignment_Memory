@@ -1,3 +1,5 @@
+package Board;
+
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -13,7 +15,7 @@ public class BoardDesigner {
      * Then as much tile values as needed for the size of the play board are added to a List<String> which is later on used to construct the board.
      * @return a list with all possible tile-values
      */
-    public List<String> readTileValues(int nbTiles) {
+    private List<String> readTileValues(int nbTiles) {
         List<String> allTileValuesFromFile = new ArrayList<>();
         try {
             allTileValuesFromFile = Files.readAllLines(Paths.get("Tile downsideValues"), Charset.defaultCharset());
@@ -34,7 +36,7 @@ public class BoardDesigner {
      * This method creates tile-objects with the given tile-values from previous method. It always creates two identical tiles to form pairs for the matching game.
      * @return a list with tile-objects.
      */
-    public List<Tile> createTileObjects(int nbTiles) {
+    private List<Tile> createTileObjects(int nbTiles) {
         List<Tile> tilesForBoard = new ArrayList<>();
         List<String> tileValues = readTileValues(nbTiles);
         int i = 0;

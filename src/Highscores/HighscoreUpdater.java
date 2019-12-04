@@ -1,3 +1,7 @@
+package Highscores;
+
+import Players.Player;
+
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -58,7 +62,7 @@ public class HighscoreUpdater {
         }
     }
 
-    public void writeHighscores(Player[] players,  String difficultyLevel) {
+    public void writeHighscores(Player[] players, String difficultyLevel) {
         List<HighscoreEntry> highscores = updateHighscores(players, difficultyLevel);
         try (FileWriter csvWriter = new FileWriter("Highscores.csv")) {
             for(int i = 0; i < highscores.size(); i++) {

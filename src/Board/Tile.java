@@ -1,3 +1,5 @@
+package Board;
+
 public class Tile {
 
     //Boolean that tells whether a tile has been turned or not.

@@ -1,3 +1,5 @@
+package Players;
+
 public abstract class Player {
 
     private int playerScore;

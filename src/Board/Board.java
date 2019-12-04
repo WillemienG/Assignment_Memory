@@ -1,3 +1,5 @@
+package Board;
+
 public class Board {
 
     final private Tile[][] tiles;

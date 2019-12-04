@@ -1,5 +1,9 @@
+package DifficultyLevel;
+
+import Board.WidthHeightDetermination;
+
 public enum DifficultyLevel implements WidthHeightDetermination {
-    FIRSTLEVEL(2, 2), SECONDLEVEL(4,3), THIRDLEVEL(6,6), FOURTHLEVEL(8,8);
+    FIRSTLEVEL(2, 2), SECONDLEVEL(4,3), THIRDLEVEL(5,6), FOURTHLEVEL(8,8);
 
     private int width;
     private int height;

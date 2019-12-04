@@ -1,3 +1,5 @@
+package Players;
+
 import java.util.concurrent.ThreadLocalRandom;
 
 public class ComputerPlayer extends Player{
