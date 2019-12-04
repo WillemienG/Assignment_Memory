@@ -37,7 +37,7 @@ public class Game {
         final int height = dimensions[0];
         final int width = dimensions[1];
         BoardDesigner boardDesigner = new BoardDesigner();
-        this.board = boardDesigner.createBoard(height, width);
+        this.board = boardDesigner.finishBoard(height, width, difficultyLevel);
         MakePlayers makePlayers = new MakePlayers();
         this.player1 = makePlayers.makePlayer1();
         this.player2 = makePlayers.makePlayer2();
@@ -59,10 +59,53 @@ public class Game {
         return players;
     }
 
+    private void turnSecondTile(Player[] players,int[] pickedTileCo1, Tile tileToTurn1, int nbTilesMatched) {
+        int[] pickedTileCo2;
+        boolean isTurnable2 = false;
+        while (!isTurnable2) {
+            boolean isOtherTile = false;
+            while (!isOtherTile) {
+                pickedTileCo2 = players[0].pickTiles(board.getHeight(), board.getWidth());
+                if (pickedTileCo2[0] == pickedTileCo1[0] && pickedTileCo2[1] == pickedTileCo1[1]) {
+                    System.out.println("You can't pick the same tile twice. Try again");
+                } else {
+                    isOtherTile = true;
+                    Tile tileToTurn2 = board.getTiles()[pickedTileCo2[0]][pickedTileCo2[1]];
+                    if (tileToTurn2.isTurned()) {
+                        System.out.println("This tile can't be turned anymore. Try again.");
+                    } else {
+                        tileToTurn2.setTurned(true);
+                        board.printBoard();
+                        isTurnable2 = true;
+                        if (tileToTurn1.getDownsideValue().equals(tileToTurn2.getDownsideValue())) {
+                            nbTilesMatched += 1;
+                            players[0].addScore();
+                        } else {
+                            tileToTurn1.setTurned(false);
+                            tileToTurn2.setTurned(false);
+                            board.printBoard();
+                        }
+                        System.out.print("\n");
+                        System.out.println(players[0].getPlayerName() + " now has a score of " + players[0].getPlayerScore() + ".");
+                        switch (tileToTurn2.getDownsideValue()) {
+                            case "Shuffle":
+                                BoardDesigner boardDesigner = new BoardDesigner();
+                                boardDesigner.shuffleBoard(board, board.getHeight(), board.getWidth());
+                                determineNextPlayer(players);
+                                tileToTurn2.setTurned(true);
+                                break;
+                            default:
+                                determineNextPlayer(players);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     private void playGame(Player[] players) {
         int nbTilesMatched = 0;
         int[] pickedTileCo1 = {0,0};
-        int[] pickedTileCo2 = {0,0};
         Tile tileToTurn1 = new Tile(false,null,"whatever");
         while (nbTilesMatched < board.getHeight() * board.getWidth() / 2) {
             boolean isTurnable1 = false;
@@ -77,36 +120,18 @@ public class Game {
                     isTurnable1 = true;
                 }
             }
-            boolean isTurnable2 = false;
-            while (!isTurnable2) {
-                boolean isOtherTile = false;
-                while (!isOtherTile) {
-                    pickedTileCo2 = players[0].pickTiles(board.getHeight(), board.getWidth());
-                    if (pickedTileCo2[0] == pickedTileCo1[0] && pickedTileCo2[1] == pickedTileCo1[1]) {
-                        System.out.println("You can't pick the same tile twice. Try again");
-                    } else {
-                        isOtherTile = true;
-                        Tile tileToTurn2 = board.getTiles()[pickedTileCo2[0]][pickedTileCo2[1]];
-                        if (tileToTurn2.isTurned()) {
-                            System.out.println("This tile can't be turned anymore. Try again.");
-                        } else {
-                            tileToTurn2.setTurned(true);
-                            board.printBoard();
-                            isTurnable2 = true;
-                            if (tileToTurn1.getDownsideValue().equals(tileToTurn2.getDownsideValue())) {
-                                nbTilesMatched += 1;
-                                players[0].addScore();
-                            } else {
-                                tileToTurn1.setTurned(false);
-                                tileToTurn2.setTurned(false);
-                                board.printBoard();
-                            }
-                            System.out.print("\n");
-                            System.out.println(players[0].getPlayerName() + " now has a score of " + players[0].getPlayerScore() + ".");
-                            determineNextPlayer(players);
-                        }
-                    }
-                }
+            switch (tileToTurn1.getDownsideValue()) {
+                case "Skip":
+                    tileToTurn1.setTurned(true);
+                    determineNextPlayer(players);
+                    break;
+                case "Shuffle":
+                    BoardDesigner boardDesigner = new BoardDesigner();
+                    boardDesigner.shuffleBoard(board, board.getHeight(), board.getWidth());
+                    determineNextPlayer(players);
+                    break;
+                default:
+                    turnSecondTile(players, pickedTileCo1, tileToTurn1, nbTilesMatched);
             }
         }
     }
