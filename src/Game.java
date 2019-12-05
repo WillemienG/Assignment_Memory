@@ -2,6 +2,7 @@ import Board.Board;
 import Board.BoardDimensioner;
 import Board.BoardDesigner;
 import Board.Tile;
+import DifficultyLevel.DifficultyLevel;
 import Highscores.HighscoreUpdater;
 import Players.MakePlayers;
 import Players.Player;
@@ -12,12 +13,14 @@ public class Game {
     private Player player1;
     private Player player2;
     private String difficultyLevel;
+    private int nbPairs;
 
-    public Game(Board board, Player player1, Player player2, String difficultyLevel) {
+    public Game(Board board, Player player1, Player player2, String difficultyLevel, int nbPairs) {
         this.board = board;
         this.player1 = player1;
         this.player2 = player2;
         this.difficultyLevel = difficultyLevel;
+        this.nbPairs = nbPairs;
     }
 
     public Game() {
@@ -33,9 +36,10 @@ public class Game {
     private void prepareGame() {
         BoardDimensioner boardDimensioner = new BoardDimensioner();
         this.difficultyLevel = boardDimensioner.askDifficultyLevel();
-        final int[] dimensions = boardDimensioner.determineWidthHeight(difficultyLevel);
+        final int[] dimensions = boardDimensioner.determineCharacteristics(difficultyLevel);
         final int height = dimensions[0];
         final int width = dimensions[1];
+        this.nbPairs = dimensions[2];
         BoardDesigner boardDesigner = new BoardDesigner();
         this.board = boardDesigner.finishBoard(height, width, difficultyLevel);
         MakePlayers makePlayers = new MakePlayers();
@@ -103,11 +107,11 @@ public class Game {
         }
     }
 
-    private void playGame(Player[] players) {
+    private void playGame(Player[] players, int nbPairs) {
         int nbTilesMatched = 0;
         int[] pickedTileCo1 = {0,0};
         Tile tileToTurn1 = new Tile(false,null,"whatever");
-        while (nbTilesMatched < board.getHeight() * board.getWidth() / 2) {
+        while (nbTilesMatched < nbPairs) {
             boolean isTurnable1 = false;
             while (!isTurnable1) {
                 pickedTileCo1 = players[0].pickTiles(board.getHeight(), board.getWidth());
@@ -158,7 +162,7 @@ public class Game {
         Player player1 = myGame.player1;
         Player player2 = myGame.player2;
         Player[] players = {player1, player2};
-        myGame.playGame(players);
+        myGame.playGame(players,myGame.nbPairs);
         myGame.determineWinner(players);
         HighscoreUpdater highscoreUpdater = new HighscoreUpdater();
         highscoreUpdater.writeHighscores(players,myGame.difficultyLevel);
