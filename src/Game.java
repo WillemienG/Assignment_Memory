@@ -2,7 +2,6 @@ import Board.Board;
 import Board.BoardDimensioner;
 import Board.BoardDesigner;
 import Board.Tile;
-import DifficultyLevel.DifficultyLevel;
 import Highscores.HighscoreUpdater;
 import Players.MakePlayers;
 import Players.Player;
@@ -14,13 +13,15 @@ public class Game {
     private Player player2;
     private String difficultyLevel;
     private int nbPairs;
+    private int nbTilesMatched;
 
-    public Game(Board board, Player player1, Player player2, String difficultyLevel, int nbPairs) {
+    public Game(Board board, Player player1, Player player2, String difficultyLevel, int nbPairs, int nbTilesMatched) {
         this.board = board;
         this.player1 = player1;
         this.player2 = player2;
         this.difficultyLevel = difficultyLevel;
         this.nbPairs = nbPairs;
+        this.nbTilesMatched = nbTilesMatched;
     }
 
     public Game() {
@@ -36,10 +37,10 @@ public class Game {
     private void prepareGame() {
         BoardDimensioner boardDimensioner = new BoardDimensioner();
         this.difficultyLevel = boardDimensioner.askDifficultyLevel();
-        final int[] dimensions = boardDimensioner.determineCharacteristics(difficultyLevel);
-        final int height = dimensions[0];
-        final int width = dimensions[1];
-        this.nbPairs = dimensions[2];
+        final int[] characteristics = boardDimensioner.determineCharacteristics(difficultyLevel);
+        final int height = characteristics[0];
+        final int width = characteristics[1];
+        this.nbPairs = characteristics[2];
         BoardDesigner boardDesigner = new BoardDesigner();
         this.board = boardDesigner.finishBoard(height, width, difficultyLevel);
         MakePlayers makePlayers = new MakePlayers();
@@ -63,7 +64,7 @@ public class Game {
         return players;
     }
 
-    private void turnSecondTile(Player[] players,int[] pickedTileCo1, Tile tileToTurn1, int nbTilesMatched) {
+    private void turnSecondTile(Player[] players,int[] pickedTileCo1, Tile tileToTurn1) {
         int[] pickedTileCo2;
         boolean isTurnable2 = false;
         while (!isTurnable2) {
@@ -94,7 +95,7 @@ public class Game {
                         switch (tileToTurn2.getDownsideValue()) {
                             case "Shuffle":
                                 BoardDesigner boardDesigner = new BoardDesigner();
-                                boardDesigner.shuffleBoard(board, board.getHeight(), board.getWidth());
+                                board = boardDesigner.shuffleBoard(board, board.getHeight(), board.getWidth());
                                 determineNextPlayer(players);
                                 tileToTurn2.setTurned(true);
                                 break;
@@ -107,8 +108,7 @@ public class Game {
         }
     }
 
-    private void playGame(Player[] players, int nbPairs) {
-        int nbTilesMatched = 0;
+    private void playGame(Player[] players, int nbPairs, int nbTilesMatched) {
         int[] pickedTileCo1 = {0,0};
         Tile tileToTurn1 = new Tile(false,null,"whatever");
         while (nbTilesMatched < nbPairs) {
@@ -135,7 +135,7 @@ public class Game {
                     determineNextPlayer(players);
                     break;
                 default:
-                    turnSecondTile(players, pickedTileCo1, tileToTurn1, nbTilesMatched);
+                    turnSecondTile(players, pickedTileCo1, tileToTurn1);
             }
         }
     }
@@ -162,7 +162,7 @@ public class Game {
         Player player1 = myGame.player1;
         Player player2 = myGame.player2;
         Player[] players = {player1, player2};
-        myGame.playGame(players,myGame.nbPairs);
+        myGame.playGame(players,myGame.nbPairs,myGame.nbTilesMatched);
         myGame.determineWinner(players);
         HighscoreUpdater highscoreUpdater = new HighscoreUpdater();
         highscoreUpdater.writeHighscores(players,myGame.difficultyLevel);

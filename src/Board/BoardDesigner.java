@@ -41,7 +41,7 @@ public class BoardDesigner {
         List<Tile> tilesForBoard = new ArrayList<>();
         List<String> tileValues = readTileValues(nbTiles);
         Tile tileSkip = new Tile(false,null,"Skip");
-        Tile tileShuffle = new Tile(false,null,"Skip");
+        Tile tileShuffle = new Tile(false,null,"Shuffle");
         switch(difficultyLevel) {
             case "B":
                 tilesForBoard.add(tileSkip);
