@@ -15,15 +15,6 @@ public class Game {
     private int nbPairs;
     private int nbTilesMatched;
 
-    public Game(Board board, Player player1, Player player2, String difficultyLevel, int nbPairs, int nbTilesMatched) {
-        this.board = board;
-        this.player1 = player1;
-        this.player2 = player2;
-        this.difficultyLevel = difficultyLevel;
-        this.nbPairs = nbPairs;
-        this.nbTilesMatched = nbTilesMatched;
-    }
-
     public Game() {
     }
 
@@ -95,7 +86,8 @@ public class Game {
                         switch (tileToTurn2.getDownsideValue()) {
                             case "Shuffle":
                                 BoardDesigner boardDesigner = new BoardDesigner();
-                                board = boardDesigner.shuffleBoard(board, board.getHeight(), board.getWidth());
+                                this.board = boardDesigner.shuffleBoard(board, board.getHeight(), board.getWidth());
+                                board.printBoard();
                                 determineNextPlayer(players);
                                 tileToTurn2.setTurned(true);
                                 break;
@@ -108,7 +100,7 @@ public class Game {
         }
     }
 
-    private void playGame(Player[] players, int nbPairs, int nbTilesMatched) {
+    private void playGame(Player[] players, int nbPairs) {
         int[] pickedTileCo1 = {0,0};
         Tile tileToTurn1 = new Tile(false,null,"whatever");
         while (nbTilesMatched < nbPairs) {
@@ -131,7 +123,9 @@ public class Game {
                     break;
                 case "Shuffle":
                     BoardDesigner boardDesigner = new BoardDesigner();
-                    boardDesigner.shuffleBoard(board, board.getHeight(), board.getWidth());
+                    tileToTurn1.setTurned(true);
+                    this.board = boardDesigner.shuffleBoard(board, board.getHeight(), board.getWidth());
+                    board.printBoard();
                     determineNextPlayer(players);
                     break;
                 default:
@@ -162,7 +156,7 @@ public class Game {
         Player player1 = myGame.player1;
         Player player2 = myGame.player2;
         Player[] players = {player1, player2};
-        myGame.playGame(players,myGame.nbPairs,myGame.nbTilesMatched);
+        myGame.playGame(players,myGame.nbPairs);
         myGame.determineWinner(players);
         HighscoreUpdater highscoreUpdater = new HighscoreUpdater();
         highscoreUpdater.writeHighscores(players,myGame.difficultyLevel);
