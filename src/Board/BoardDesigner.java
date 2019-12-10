@@ -40,26 +40,30 @@ public class BoardDesigner {
     private List<Tile> createTileObjects(int nbTiles, String difficultyLevel) {
         List<Tile> tilesForBoard = new ArrayList<>();
         List<String> tileValues = readTileValues(nbTiles);
-        Tile tileSkip = new Tile(false,null,"Skip");
-        Tile tileShuffle = new Tile(false,null,"Shuffle");
+        Tile tileSkip1 = new Tile(false,null,"Skip");
+        Tile tileShuffle1 = new Tile(false,null,"Shuffle");
+        Tile tileSkip2 = new Tile(false,null,"Skip");
+        Tile tileShuffle2 = new Tile(false,null,"Shuffle");
+        Tile tileSkip3 = new Tile(false,null,"Skip");
+        Tile tileShuffle3 = new Tile(false,null,"Shuffle");
         switch(difficultyLevel) {
             case "B":
-                tilesForBoard.add(tileSkip);
-                tilesForBoard.add(tileShuffle);
+                tilesForBoard.add(tileSkip1);
+                tilesForBoard.add(tileShuffle1);
                 break;
             case "C":
-                tilesForBoard.add(tileSkip);
-                tilesForBoard.add(tileSkip);
-                tilesForBoard.add(tileShuffle);
-                tilesForBoard.add(tileShuffle);
+                tilesForBoard.add(tileSkip1);
+                tilesForBoard.add(tileSkip2);
+                tilesForBoard.add(tileShuffle1);
+                tilesForBoard.add(tileShuffle2);
                 break;
             case "D":
-                tilesForBoard.add(tileSkip);
-                tilesForBoard.add(tileSkip);
-                tilesForBoard.add(tileSkip);
-                tilesForBoard.add(tileShuffle);
-                tilesForBoard.add(tileShuffle);
-                tilesForBoard.add(tileShuffle);
+                tilesForBoard.add(tileSkip1);
+                tilesForBoard.add(tileSkip2);
+                tilesForBoard.add(tileSkip3);
+                tilesForBoard.add(tileShuffle1);
+                tilesForBoard.add(tileShuffle2);
+                tilesForBoard.add(tileShuffle3);
                 break;
         }
         int i = 0;

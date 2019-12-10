@@ -2,6 +2,7 @@ package Highscores;
 
 import Players.Player;
 
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -12,7 +13,7 @@ import static java.lang.Integer.parseInt;
 
 public class HighscoreUpdater {
 
-    private List<HighscoreEntry> readHighscores() {
+    public List<HighscoreEntry> readHighscores() {
         List<HighscoreEntry> highscores = new ArrayList<>();
         try (Scanner scan = new Scanner(new FileReader("Highscores.csv"))) {
             while (scan.hasNext()) {
@@ -69,6 +70,8 @@ public class HighscoreUpdater {
     public void writeHighscores(Player[] players, String difficultyLevel) {
         List<HighscoreEntry> highscores = updateHighscores(players, difficultyLevel);
         try (FileWriter csvWriter = new FileWriter("Highscores.csv")) {
+            File f = new File("Highscores.csv");
+            f.createNewFile();
             for(int i = 0; i < highscores.size(); i++) {
                 String playerName = highscores.get(i).getPlayerName();
                 String playerScore = Integer.toString(highscores.get(i).getPlayerScore());
