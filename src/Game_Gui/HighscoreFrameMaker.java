@@ -1,4 +1,4 @@
-package Game.gui;
+package Game_Gui;
 
 import Highscores.HighscoreEntry;
 import Highscores.HighscoreUpdater;
@@ -10,7 +10,7 @@ public class HighscoreFrameMaker {
 
     public void makeHighscoreFrame() {
         JFrame highscoreFrame = new JFrame("Highscores");
-        highscoreFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        highscoreFrame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
         JTable highscoresTable = makeHighscoreTable();
         JScrollPane scrollPane = new JScrollPane(highscoresTable);
         highscoresTable.setFillsViewportHeight(true);

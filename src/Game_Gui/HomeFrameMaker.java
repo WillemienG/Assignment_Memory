@@ -1,32 +1,38 @@
-package Game.gui;
+package Game_Gui;
+
+import Board.Board;
+import Board.BoardDimensioner;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class HomeFrameMaker {
 
-    public JFrame makeHomeFrame() {
+    public void makeHomeFrame() {
         JFrame homeFrame = new JFrame("Memory - home");
         homeFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         JLabel homeLabel = new JLabel("Memory - set up your game");
         homeLabel.setFont(new Font("Tahoma",Font.BOLD,20));
 
         homeFrame.getContentPane().setLayout(new BoxLayout(homeFrame.getContentPane(),BoxLayout.Y_AXIS));
-        homeLabel.setBorder(BorderFactory.createEmptyBorder(10,30,0,30));
+        homeLabel.setBorder(BorderFactory.createEmptyBorder(10,0,0,0));
         homeFrame.getContentPane().add(homeLabel);
+
+        JPanel optionsPanelNew = new JPanel();
+        optionsPanelNew.setLayout(new FlowLayout(FlowLayout.CENTER,20,20));
+        optionsPanelNew.add(makeOptionsPanel());
+        optionsPanelNew.add(makeStartButton());
+
         homeFrame.getContentPane().add(makeDiffLevPanel());
         homeFrame.getContentPane().add(makePlayerPanel());
-        homeFrame.getContentPane().add(makeOptionsPanel());
+        homeFrame.getContentPane().add(optionsPanelNew);
         homeFrame.pack();
         homeFrame.setVisible(true);
-
-        return homeFrame;
     }
 
-    private JPanel makeDiffLevPanel() {
+    protected JPanel makeDiffLevPanel() {
         JPanel diffLevPanel = new JPanel();
         JLabel diffLevLabel = new JLabel("Choose your difficulty level. Explanation can be found in the rules.");
 
@@ -64,6 +70,12 @@ public class HomeFrameMaker {
                         rowSpinner.setEnabled(true);
                         columnSpinner.setEnabled(true);
                     }
+                    //try {
+                      //  rowSpinner.commitEdit();
+                        //columnSpinner.commitEdit();
+                    //} catch (java.text.ParseException pe) { }
+                    //BoardDimensioner boardDimensioner = new BoardDimensioner();
+                    //boardDimensioner.determineCharacteristics(diffLevelGroup.getSelection().getActionCommand(),(Integer) rowSpinner.getValue(),(Integer) columnSpinner.getValue());
                 }
             });
         }
@@ -71,12 +83,12 @@ public class HomeFrameMaker {
         diffLevPanel.setLayout(new BorderLayout());
         diffLevPanel.setBorder(BorderFactory.createEmptyBorder(10,30,10,30));
         diffLevPanel.add(diffLevLabel, BorderLayout.NORTH);
-        diffLevPanel.add(diffLevButtonPanel, BorderLayout.CENTER);
+        diffLevPanel.add(diffLevButtonPanel, BorderLayout.WEST);
         diffLevPanel.add(dimPanel, BorderLayout.SOUTH);
         return diffLevPanel;
     }
 
-    private JPanel makePlayerPanel() {
+    protected JPanel makePlayerPanel() {
         JPanel playerPanel = new JPanel();
         JLabel playerLabel = new JLabel("Choose your player mode.");
 
@@ -120,12 +132,13 @@ public class HomeFrameMaker {
         playerPanel.setLayout(new BorderLayout());
         playerPanel.setBorder(BorderFactory.createEmptyBorder(10,30,10,30));
         playerPanel.add(playerLabel,BorderLayout.NORTH);
-        playerPanel.add(playerModeButtonPanel,BorderLayout.CENTER);
+        playerPanel.add(playerModeButtonPanel,BorderLayout.WEST);
         playerPanel.add(playerNamePanel,BorderLayout.SOUTH);
 
         return playerPanel;
     }
-    private JPanel makeOptionsPanel() {
+
+    protected JPanel makeOptionsPanel() {
         JPanel optionsPanel = new JPanel();
 
         JButton showRules = new JButton("Rules");
@@ -174,22 +187,24 @@ public class HomeFrameMaker {
             }
         });
 
-        JButton startButton = new JButton("Start game");
-        startButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //Iets dat nu het tweede scherm doet openspringen, dus een methode à la makeBoardFrame
-            }
-        });
-
         optionsPanel.setLayout(new FlowLayout(FlowLayout.CENTER,20,20));
         optionsPanel.add(showRules);
         optionsPanel.add(showHighscores);
         optionsPanel.add(quitButton);
-        optionsPanel.add(startButton);
         return optionsPanel;
     }
 
+    public JButton makeStartButton() {
+        JButton startButton = new JButton("Start game");
+        startButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                GameFrameMaker gameFrameMaker = new GameFrameMaker();
+                gameFrameMaker.makeGameFrame(5,4);
+            }
+        });
+        return startButton;
+    }
     public static void main(String[] args) {
         HomeFrameMaker homeFrameMaker = new HomeFrameMaker();
         homeFrameMaker.makeHomeFrame();

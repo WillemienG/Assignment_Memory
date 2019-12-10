@@ -8,12 +8,12 @@ import Players.Player;
 
 public class Game {
 
-    private Board board;
-    private Player player1;
-    private Player player2;
-    private String difficultyLevel;
-    private int nbPairs;
-    private int nbTilesMatched;
+    Board board;
+    Player player1;
+    Player player2;
+    String difficultyLevel;
+    int nbPairs;
+    int nbTilesMatched;
 
     public Game() {
     }
@@ -73,14 +73,8 @@ public class Game {
                         tileToTurn2.setTurned(true);
                         board.printBoard();
                         isTurnable2 = true;
-                        if (tileToTurn1.getDownsideValue().equals(tileToTurn2.getDownsideValue())) {
-                            nbTilesMatched += 1;
-                            players[0].addScore();
-                        } else {
-                            tileToTurn1.setTurned(false);
-                            tileToTurn2.setTurned(false);
-                            board.printBoard();
-                        }
+                        checkTileMatch(tileToTurn2,tileToTurn1,players);
+                        board.printBoard();
                         System.out.print("\n");
                         System.out.println(players[0].getPlayerName() + " now has a score of " + players[0].getPlayerScore() + ".");
                         switch (tileToTurn2.getDownsideValue()) {
@@ -97,6 +91,16 @@ public class Game {
                     }
                 }
             }
+        }
+    }
+
+    private void checkTileMatch(Tile tile1, Tile tile2, Player[] players) {
+        if (tile1.getDownsideValue().equals(tile2.getDownsideValue())) {
+            players[0].addScore();
+            nbTilesMatched += 1;
+        } else {
+            tile1.setTurned(false);
+            tile2.setTurned(false);
         }
     }
 

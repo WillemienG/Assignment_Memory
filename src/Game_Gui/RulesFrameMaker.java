@@ -1,6 +1,5 @@
-package Game.gui;
+package Game_Gui;
 
-import javax.imageio.IIOException;
 import javax.swing.*;
 import java.awt.*;
 import java.io.*;
@@ -9,7 +8,7 @@ public class RulesFrameMaker {
 
     public void readRules() {
         JFrame rulesFrame = new JFrame("Memory: the rules");
-        rulesFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        rulesFrame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
         JTextArea rulesArea = new JTextArea();
         try {
             BufferedReader bf = new BufferedReader(new InputStreamReader(new FileInputStream("Rules")));

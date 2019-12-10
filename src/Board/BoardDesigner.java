@@ -78,8 +78,8 @@ public class BoardDesigner {
     }
 
     /**
-     * This method creates a board-matrix with tile-objects. Depending on whether a tile has already been turned, the upside value ("Turn me!") or downside value is printed.
-     * @return a board-matrix with tile-objects.
+     * This method creates a board-object with tile-objects, dependent on the given height, width and with the shuffled tiles.
+     * @return a board-object.
      */
     public Board finishBoard(int height, int width, String difficultyLevel) {
         int nbTiles = height*width;
