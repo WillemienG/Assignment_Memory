@@ -37,46 +37,50 @@ public class BoardDimensioner {
         return chosenLevel;
     }
 
-    private int[] returnWidthHeight(DifficultyLevel difficultyLevel) {
-        WidthHeightDetermination widthAndHeight = difficultyLevel;
-        int[] boardDimensions = new int[2];
-        int width = widthAndHeight.getWidth();
-        int height = widthAndHeight.getHeight();
-        boardDimensions[0] = height;
-        boardDimensions[1] = width;
-        return boardDimensions;
+    private int[] returnCharacteristics(DifficultyLevel difficultyLevel) {
+        BoardCharacteristics characteristics = difficultyLevel;
+        int[] boardCharacteristics = new int[3];
+        int width = characteristics.getWidth();
+        int height = characteristics.getHeight();
+        int nbPairs = characteristics.getNbPairs();
+        boardCharacteristics[0] = height;
+        boardCharacteristics[1] = width;
+        boardCharacteristics[2] = nbPairs;
+        return boardCharacteristics;
     }
 
-    public int[] determineWidthHeight(String chosenLevel) {
-        WidthHeightDetermination widthAndHeight;
-        int[] boardDimensions = new int[2];
-        switch (chosenLevel) {
-            //TODO: van deze 4 regels kan je ook een methode maken die een DifficultyLevel.DifficultyLevel als argument heeft en dan een int[] terug geeft. Spaart wat regels!
+    public int[] determineCharacteristics(String difficultyLevel) {
+        BoardCharacteristics characteristics;
+        int[] boardCharacteristics = new int[3];
+        switch (difficultyLevel) {
             case "A":
-                boardDimensions = returnWidthHeight(DifficultyLevel.FIRSTLEVEL);
-                return boardDimensions;
+                boardCharacteristics = returnCharacteristics(DifficultyLevel.FIRSTLEVEL);
+                return boardCharacteristics;
             case "B":
-                boardDimensions = returnWidthHeight(DifficultyLevel.SECONDLEVEL);
-                return boardDimensions;
+                boardCharacteristics = returnCharacteristics(DifficultyLevel.SECONDLEVEL);
+                return boardCharacteristics;
             case "C":
-                boardDimensions = returnWidthHeight(DifficultyLevel.THIRDLEVEL);
-                return boardDimensions;
+                boardCharacteristics = returnCharacteristics(DifficultyLevel.THIRDLEVEL);
+                return boardCharacteristics;
             case "D":
-                boardDimensions = returnWidthHeight(DifficultyLevel.FOURTHLEVEL);
-                return boardDimensions;
+                boardCharacteristics = returnCharacteristics(DifficultyLevel.FOURTHLEVEL);
+                return boardCharacteristics;
             case "E":
                 //Only when player chooses a customized board, the askBoardDimensions() gets called. These created values then are used to set width and height
                 int[] customBoardDimensions = askBoardDimensions();
-                widthAndHeight = new CustomDifficultyLevel(customBoardDimensions[0], customBoardDimensions[1]);
-                int width = widthAndHeight.getWidth();
-                int height = widthAndHeight.getHeight();
-                boardDimensions[0] = height;
-                boardDimensions[1] = width;
-                return boardDimensions;
+                characteristics = new CustomDifficultyLevel(customBoardDimensions[0], customBoardDimensions[1],customBoardDimensions[0]*customBoardDimensions[1]/2);
+                int width = characteristics.getWidth();
+                int height = characteristics.getHeight();
+                int nbPairs = characteristics.getNbPairs();
+                boardCharacteristics[0] = height;
+                boardCharacteristics[1] = width;
+                boardCharacteristics[2] = nbPairs;
+                return boardCharacteristics;
             default:
-                boardDimensions[0] = 2;
-                boardDimensions[1] = 2;
-                return boardDimensions;
+                boardCharacteristics[0] = 2;
+                boardCharacteristics[1] = 2;
+                boardCharacteristics[2] = 2;
+                return boardCharacteristics;
         }
     }
 
@@ -113,4 +117,5 @@ public class BoardDimensioner {
         }
         return boardDimensions;
     }
+
 }
