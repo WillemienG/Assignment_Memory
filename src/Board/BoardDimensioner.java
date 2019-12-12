@@ -49,7 +49,7 @@ public class BoardDimensioner {
         return boardCharacteristics;
     }
 
-    public int[] determineCharacteristics(String difficultyLevel) {
+    public int[] determineCharacteristics(String difficultyLevel, int nbRows, int nbColumns) {
         BoardCharacteristics characteristics;
         int[] boardCharacteristics = new int[3];
         switch (difficultyLevel) {
@@ -67,8 +67,7 @@ public class BoardDimensioner {
                 return boardCharacteristics;
             case "E":
                 //Only when player chooses a customized board, the askBoardDimensions() gets called. These created values then are used to set width and height
-                int[] customBoardDimensions = askBoardDimensions();
-                characteristics = new CustomDifficultyLevel(customBoardDimensions[0], customBoardDimensions[1],customBoardDimensions[0]*customBoardDimensions[1]/2);
+                characteristics = new CustomDifficultyLevel(nbRows,nbColumns,nbRows*nbColumns/2);
                 int width = characteristics.getWidth();
                 int height = characteristics.getHeight();
                 int nbPairs = characteristics.getNbPairs();

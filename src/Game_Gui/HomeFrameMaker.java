@@ -1,9 +1,13 @@
 package Game_Gui;
 
-import Board.Board;
-import Board.BoardDimensioner;
+import Highscores.HighscoreUpdater;
+import Players.Player;
+import Main.Game;
+import Game_Gui.ActionListeners.StartButtonListener;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -20,30 +24,18 @@ public class HomeFrameMaker {
         homeLabel.setBorder(BorderFactory.createEmptyBorder(10,0,0,0));
         homeFrame.getContentPane().add(homeLabel);
 
-        JPanel optionsPanelNew = new JPanel();
-        optionsPanelNew.setLayout(new FlowLayout(FlowLayout.CENTER,20,20));
-        optionsPanelNew.add(makeOptionsPanel());
-        optionsPanelNew.add(makeStartButton());
-
-        homeFrame.getContentPane().add(makeDiffLevPanel());
-        homeFrame.getContentPane().add(makePlayerPanel());
-        homeFrame.getContentPane().add(optionsPanelNew);
-        homeFrame.pack();
-        homeFrame.setVisible(true);
-    }
-
-    protected JPanel makeDiffLevPanel() {
         JPanel diffLevPanel = new JPanel();
         JLabel diffLevLabel = new JLabel("Choose your difficulty level. Explanation can be found in the rules.");
 
         JPanel dimPanel = new JPanel();
         dimPanel.setLayout(new FlowLayout());
         JLabel dimLabel = new JLabel("Option E: Choose your customized board dimensions. Make sure the product rows*columns is even.");
-        SpinnerModel dimModel = new SpinnerNumberModel(4,1,8,1);
-        JSpinner rowSpinner = new JSpinner(dimModel);
+        SpinnerModel rowModel = new SpinnerNumberModel(4,1,8,1);
+        JSpinner rowSpinner = new JSpinner(rowModel);
         rowSpinner.setEnabled(false);
         JLabel rowLabel = new JLabel("Number of rows:");
-        JSpinner columnSpinner = new JSpinner(dimModel);
+        SpinnerModel columnModel = new SpinnerNumberModel(4,1,8,1);
+        JSpinner columnSpinner = new JSpinner(columnModel);
         columnSpinner.setEnabled(false);
         JLabel columnLabel = new JLabel("Number of columns:");
         dimPanel.add(dimLabel);
@@ -70,12 +62,6 @@ public class HomeFrameMaker {
                         rowSpinner.setEnabled(true);
                         columnSpinner.setEnabled(true);
                     }
-                    //try {
-                      //  rowSpinner.commitEdit();
-                        //columnSpinner.commitEdit();
-                    //} catch (java.text.ParseException pe) { }
-                    //BoardDimensioner boardDimensioner = new BoardDimensioner();
-                    //boardDimensioner.determineCharacteristics(diffLevelGroup.getSelection().getActionCommand(),(Integer) rowSpinner.getValue(),(Integer) columnSpinner.getValue());
                 }
             });
         }
@@ -85,22 +71,19 @@ public class HomeFrameMaker {
         diffLevPanel.add(diffLevLabel, BorderLayout.NORTH);
         diffLevPanel.add(diffLevButtonPanel, BorderLayout.WEST);
         diffLevPanel.add(dimPanel, BorderLayout.SOUTH);
-        return diffLevPanel;
-    }
 
-    protected JPanel makePlayerPanel() {
         JPanel playerPanel = new JPanel();
         JLabel playerLabel = new JLabel("Choose your player mode.");
 
         JPanel playerNamePanel = new JPanel();
         playerNamePanel.setLayout(new BoxLayout(playerNamePanel, BoxLayout.X_AXIS));
         JTextField player1Name = new JTextField();
-        player1Name.setMinimumSize(new Dimension(30,15));
-        player1Name.setMaximumSize(new Dimension(50,15));
+        player1Name.setMinimumSize(new Dimension(30,20));
+        player1Name.setMaximumSize(new Dimension(50,30));
         JLabel player1Label = new JLabel("Name player 1");
         JTextField player2Name = new JTextField();
-        player2Name.setMinimumSize(new Dimension(30,15));
-        player2Name.setMaximumSize(new Dimension(50,15));
+        player2Name.setMinimumSize(new Dimension(30,20));
+        player2Name.setMaximumSize(new Dimension(50,30));
         player2Name.setEnabled(false);
         JLabel player2Label = new JLabel("Name player 2");
         playerNamePanel.add(player1Label);
@@ -121,7 +104,7 @@ public class HomeFrameMaker {
             playerModeButtons[i].addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    String chosenMode = playerModeGroup.getSelection().getActionCommand();
+                    final String chosenMode = playerModeGroup.getSelection().getActionCommand();
                     if (chosenMode.equals("Multiplayer")) {
                         player2Name.setEnabled(true);
                     }
@@ -135,7 +118,41 @@ public class HomeFrameMaker {
         playerPanel.add(playerModeButtonPanel,BorderLayout.WEST);
         playerPanel.add(playerNamePanel,BorderLayout.SOUTH);
 
-        return playerPanel;
+        JButton startButton = new JButton("Start game");
+        Game myGame = new Game();
+        startButton.addActionListener(new StartButtonListener(myGame) {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int nbRows = (Integer) rowSpinner.getValue();
+                int nbColumns = (Integer) columnSpinner.getValue();
+                String diffLevel = diffLevelGroup.getSelection().getActionCommand();
+                String playerMode = playerModeGroup.getSelection().getActionCommand();
+                String player1ChosenName = player1Name.getText();
+                String player2ChosenName = player2Name.getText();
+
+                myGame.prepareGame(nbRows,nbColumns,diffLevel,playerMode,player1ChosenName,player2ChosenName);
+                Player player1 = myGame.player1;
+                Player player2 = myGame.player2;
+                Player[] players = {player1, player2};
+                GameFrameMaker gameFrameMaker = new GameFrameMaker();
+                gameFrameMaker.makeGameFrame(myGame.board,players,myGame);
+
+                myGame.determineWinner(players);
+                HighscoreUpdater highscoreUpdater = new HighscoreUpdater();
+                highscoreUpdater.writeHighscores(players,diffLevel);
+            }
+        });
+
+        JPanel optionsPanelNew = new JPanel();
+        optionsPanelNew.setLayout(new FlowLayout(FlowLayout.CENTER,20,20));
+        optionsPanelNew.add(makeOptionsPanel());
+        optionsPanelNew.add(startButton);
+
+        homeFrame.getContentPane().add(diffLevPanel);
+        homeFrame.getContentPane().add(playerPanel);
+        homeFrame.getContentPane().add(optionsPanelNew);
+        homeFrame.pack();
+        homeFrame.setVisible(true);
     }
 
     protected JPanel makeOptionsPanel() {
@@ -192,21 +209,5 @@ public class HomeFrameMaker {
         optionsPanel.add(showHighscores);
         optionsPanel.add(quitButton);
         return optionsPanel;
-    }
-
-    public JButton makeStartButton() {
-        JButton startButton = new JButton("Start game");
-        startButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                GameFrameMaker gameFrameMaker = new GameFrameMaker();
-                gameFrameMaker.makeGameFrame(5,4);
-            }
-        });
-        return startButton;
-    }
-    public static void main(String[] args) {
-        HomeFrameMaker homeFrameMaker = new HomeFrameMaker();
-        homeFrameMaker.makeHomeFrame();
     }
 }

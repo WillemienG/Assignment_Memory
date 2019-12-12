@@ -27,16 +27,14 @@ public class MakePlayers {
         return playerMode;
     }
 
-    public Player makePlayer1() {
-        HumanPlayer player1 = new HumanPlayer(0, "player1Name");
-        player1.setPlayerName(HumanPlayer.askPlayerName());
+    public Player makePlayer1(String player1Name) {
+        HumanPlayer player1 = new HumanPlayer(0, player1Name);
         return player1;
     }
 
-    public Player makePlayer2() {
-        if (askPlayerMode() == 1) {
-            HumanPlayer player2 = new HumanPlayer(0, "player1Name");
-            player2.setPlayerName(HumanPlayer.askPlayerName());
+    public Player makePlayer2(String playerMode, String player2Name) {
+        if (playerMode.equals("Multiplayer")) {
+            HumanPlayer player2 = new HumanPlayer(0, player2Name);
             return player2;
         } else {
             ComputerPlayer player2 = new ComputerPlayer(0, "the computer");
