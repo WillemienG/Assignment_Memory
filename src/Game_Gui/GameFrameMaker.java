@@ -52,6 +52,7 @@ public class GameFrameMaker {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         game.turnFirstTile(players,tileForHere);
+                        //JButton newButtonForTile = createTileButton(tileForHere); En dan nu zorgen dat die nieuwe knop op de juiste plaats in het rooster geplaatst wordt?
                         //game.turnSecondTile(players,tileForHere);Voor de 2e tegel zit ik nogal vast... :(
                         tilePanel.revalidate();
                     }
