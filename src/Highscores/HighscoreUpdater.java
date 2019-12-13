@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import static java.lang.Integer.parseInt;
+import static java.lang.Double.parseDouble;
 
 public class HighscoreUpdater {
 
@@ -20,7 +20,7 @@ public class HighscoreUpdater {
                 String scoreData = scan.next();
                 String[] scoreValues = scoreData.split(",");
                 String playerName = scoreValues[0];
-                int playerScore = parseInt(scoreValues[1]);
+                double playerScore = parseDouble(scoreValues[1]);
                 String difficultyLevel = scoreValues[2];
                 HighscoreEntry highscoreEntry = new HighscoreEntry(playerName,playerScore,difficultyLevel);
                 highscores.add(highscoreEntry);
@@ -32,7 +32,7 @@ public class HighscoreUpdater {
     }
 
     private List<HighscoreEntry> compareScore(Player player, String difficultyLevel, List<HighscoreEntry> highscores) {
-        int score = player.getPlayerScore();
+        double score = player.getPlayerScore();
         boolean isHighscore = false;
         if (!player.getPlayerName().equals("the computer")) {
             for (int i = highscores.size() - 1; i >= 0; i--) {
@@ -74,7 +74,7 @@ public class HighscoreUpdater {
             f.createNewFile();
             for(int i = 0; i < highscores.size(); i++) {
                 String playerName = highscores.get(i).getPlayerName();
-                String playerScore = Integer.toString(highscores.get(i).getPlayerScore());
+                String playerScore = Double.toString(highscores.get(i).getPlayerScore());
                 String diffLevel = highscores.get(i).getDifficultyLevel();
                 String[] scoreData = {playerName, playerScore, diffLevel};
 

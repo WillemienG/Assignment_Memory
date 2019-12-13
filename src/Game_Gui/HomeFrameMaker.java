@@ -19,6 +19,7 @@ public class HomeFrameMaker {
         homeFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         JLabel homeLabel = new JLabel("Memory - set up your game");
         homeLabel.setFont(new Font("Tahoma",Font.BOLD,20));
+        homeFrame.setResizable(false);
 
         homeFrame.getContentPane().setLayout(new BoxLayout(homeFrame.getContentPane(),BoxLayout.Y_AXIS));
         homeLabel.setBorder(BorderFactory.createEmptyBorder(10,0,0,0));
@@ -137,7 +138,6 @@ public class HomeFrameMaker {
                 GameFrameMaker gameFrameMaker = new GameFrameMaker();
                 gameFrameMaker.makeGameFrame(myGame.board,players,myGame);
 
-                myGame.determineWinner(players);
                 HighscoreUpdater highscoreUpdater = new HighscoreUpdater();
                 highscoreUpdater.writeHighscores(players,diffLevel);
             }

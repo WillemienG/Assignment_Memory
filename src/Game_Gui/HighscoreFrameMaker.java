@@ -26,7 +26,7 @@ public class HighscoreFrameMaker {
         String[][] highscoreData = new String[highscores.size()][3];
         for (int i = 0; i < highscoreData.length;i++) {
             String playerName = highscores.get(i).getPlayerName();
-            String playerScore = Integer.toString(highscores.get(i).getPlayerScore());
+            String playerScore = Double.toString(highscores.get(i).getPlayerScore());
             String diffLevel = highscores.get(i).getDifficultyLevel();
             String[] scoreData = {playerName, playerScore, diffLevel};
             for (int j = 0; j < 3; j++) {

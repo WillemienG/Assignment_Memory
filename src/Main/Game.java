@@ -8,6 +8,8 @@ import Highscores.HighscoreUpdater;
 import Players.MakePlayers;
 import Players.Player;
 
+import javax.swing.*;
+
 public class Game {
 
     public Board board;
@@ -15,6 +17,8 @@ public class Game {
     public Player player2;
     public int nbPairs;
     public int nbTilesMatched;
+    public Tile lastTurnedTile;
+    public JButton lastClickedButton;
 
     public Game() {
     }
@@ -42,8 +46,7 @@ public class Game {
 
    public void turnFirstTile(Player[] players, Tile tileToTurn1) {
         tileToTurn1.setTurned(true);
-        board.printBoard();
-
+        tileToTurn1.setNbTimesTurned(tileToTurn1.getNbTimesTurned()+1);
         switch (tileToTurn1.getDownsideValue()) {
             case "Skip":
                 tileToTurn1.setTurned(true);
@@ -60,9 +63,9 @@ public class Game {
         }
     }
 
-    public void turnSecondTile(Player[] players, Tile tileToTurn1, Tile tileToTurn2) {
+    public void turnSecondTile(Player[] players, Tile tileToTurn2) {
         tileToTurn2.setTurned(true);
-        checkTileMatch(tileToTurn2, tileToTurn1, players);
+        tileToTurn2.setNbTimesTurned(tileToTurn2.getNbTimesTurned()+1);
         System.out.println(players[0].getPlayerName() + " now has a score of " + players[0].getPlayerScore() + ".");
         switch (tileToTurn2.getDownsideValue()) {
             case "Shuffle":
@@ -76,9 +79,9 @@ public class Game {
         }
     }
 
-    public void checkTileMatch(Tile tile1, Tile tile2, Player[] players) {
+    public void checkTileMatch(Tile tile1, Tile tile2, Player[] players, Game game) {
         if (tile1.getDownsideValue().equals(tile2.getDownsideValue())) {
-            players[0].addScore();
+            players[0].addScore(tile1.getNbTimesTurned(),tile2.getNbTimesTurned(),game.nbPairs,game.nbTilesMatched);
             nbTilesMatched += 1;
         } else {
             tile1.setTurned(false);
@@ -101,20 +104,35 @@ public class Game {
         return players;
     }
 
-    public void determineWinner(Player[] players) {
-        String winner;
-        int score1 = players[0].getPlayerScore();
-        int score2 = players[1].getPlayerScore();
+    public Tile getLastTurnedTile() {
+        return lastTurnedTile;
+    }
+
+    public void setLastTurnedTile(Tile lastTurnedTile) {
+        this.lastTurnedTile = lastTurnedTile;
+    }
+
+    public JButton getLastClickedButton() {
+        return lastClickedButton;
+    }
+
+    public void setLastClickedButton(JButton lastClickedButton) {
+        this.lastClickedButton = lastClickedButton;
+    }
+
+    public String determineWinner(Player[] players) {
+        String winner = "whatever";
+        double score1 = players[0].getPlayerScore();
+        double score2 = players[1].getPlayerScore();
         System.out.print("\n");
         if (score1 > score2) {
             winner = players[0].getPlayerName();
-            System.out.println("The winner of this game is " + winner + ", congratulations! You ended with a score of " + score1 + ".");
         } else if (score1 == score2) {
-            System.out.println("You both did well in this game and finished with an ex aequo of " + score1 + ".");
+            winner = "you both did well in this game and finished with an ex aequo of " + score1;
         } else if (score1 < score2) {
             winner = players[1].getPlayerName();
-            System.out.println("The winner of this game is " + winner + ", congratulations! You ended with a score of " + score2 + ".");
         }
+        return winner;
     }
 }
 

@@ -40,12 +40,12 @@ public class BoardDesigner {
     private List<Tile> createTileObjects(int nbTiles, String difficultyLevel) {
         List<Tile> tilesForBoard = new ArrayList<>();
         List<String> tileValues = readTileValues(nbTiles);
-        Tile tileSkip1 = new Tile(false,null,"Skip");
-        Tile tileShuffle1 = new Tile(false,null,"Shuffle");
-        Tile tileSkip2 = new Tile(false,null,"Skip");
-        Tile tileShuffle2 = new Tile(false,null,"Shuffle");
-        Tile tileSkip3 = new Tile(false,null,"Skip");
-        Tile tileShuffle3 = new Tile(false,null,"Shuffle");
+        Tile tileSkip1 = new Tile(false,null,"Skip",0);
+        Tile tileShuffle1 = new Tile(false,null,"Shuffle",0);
+        Tile tileSkip2 = new Tile(false,null,"Skip",0);
+        Tile tileShuffle2 = new Tile(false,null,"Shuffle",0);
+        Tile tileSkip3 = new Tile(false,null,"Skip",0);
+        Tile tileShuffle3 = new Tile(false,null,"Shuffle",0);
         switch(difficultyLevel) {
             case "B":
                 tilesForBoard.add(tileSkip1);
@@ -68,9 +68,9 @@ public class BoardDesigner {
         }
         int i = 0;
         while (tilesForBoard.size() < tileValues.size() * 2) {
-            Tile tileA = new Tile(false,null,tileValues.get(i));
+            Tile tileA = new Tile(false,null,tileValues.get(i),0);
             tilesForBoard.add(tileA);
-            Tile tileB = new Tile(false,null,tileValues.get(i));
+            Tile tileB = new Tile(false,null,tileValues.get(i),0);
             tilesForBoard.add(tileB);
             i = i + 1;
         }

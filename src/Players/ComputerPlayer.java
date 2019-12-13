@@ -25,9 +25,9 @@ public class ComputerPlayer extends Player{
     }
 
     //TODO: nadenken over hoe het scoresysteem voor de computer aangepast kan worden. Voorlopig willekeurig op 2 gezet, om te compenseren voor randomness in spel vd computer
-    public void addScore() {
-        int oldScore = this.getPlayerScore();
-        int newScore = oldScore + 1;
+    public void addScore(int nbTimesTurned1, int nbTimesTurned2,int nbPairs, int nbTilesMatched) {
+        double oldScore = this.getPlayerScore();
+        double newScore = oldScore + nbPairs/nbTilesMatched;
         this.setPlayerScore(newScore);
     }
 

@@ -5,6 +5,7 @@ import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.concurrent.TimeUnit;
 
 import Main.Game;
 import Board.Board;
@@ -26,41 +27,23 @@ public class GameFrameMaker {
         return buttonForTile;
     }
 
+    public void writeButtonText(Tile tile, JButton button) {
+        if (tile.isTurned()) {
+            button.setText(tile.getDownsideValue());
+            button.setEnabled(false);
+        } else {
+            button.setText(tile.getUpsideValue());
+            button.setEnabled(true);
+        }
+    }
+
     public void makeGameFrame(Board board, Player[] players, Game game) {
         JFrame gameFrame = new JFrame("Memory - the game");
         JLabel gameName = new JLabel("Memory - the game");
         gameName.setFont(new Font("Tahoma",Font.BOLD,20));
         gameName.setBorder(BorderFactory.createEmptyBorder(10,30,0,30));
 
-        JPanel boardPanel = new JPanel();
-        boardPanel.setLayout(new BorderLayout());
-        boardPanel.setBorder(BorderFactory.createEmptyBorder(10,30,0,30));
-        JLabel indicateTurn = new JLabel(players[0].getPlayerName() + " can now play");
 
-        JButton[][] tileButtons = new JButton[board.getHeight()][board.getWidth()];
-        JPanel tilePanel = new JPanel();
-        tilePanel.setLayout(new GridLayout(board.getHeight(),board.getWidth()));
-        Tile[][] tilesForButtons = board.getTiles();
-        for (int i = 0; i < board.getHeight(); i++) {
-            for (int j = 0; j < board.getWidth(); j++) {
-                Tile tileForHere = tilesForButtons[i][j];
-                JButton buttonForTile = createTileButton(tileForHere);
-                tileButtons[i][j] = buttonForTile;
-                tilePanel.add(tileButtons[i][j]);
-                tileButtons[i][j].setActionCommand(tilesForButtons[i][j].getDownsideValue());
-                tileButtons[i][j].addActionListener(new TileButtonListener(tileForHere,buttonForTile) {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        game.turnFirstTile(players,tileForHere);
-                        //JButton newButtonForTile = createTileButton(tileForHere); En dan nu zorgen dat die nieuwe knop op de juiste plaats in het rooster geplaatst wordt?
-                        //game.turnSecondTile(players,tileForHere);Voor de 2e tegel zit ik nogal vast... :(
-                        tilePanel.revalidate();
-                    }
-                });
-            }
-        }
-        boardPanel.add(indicateTurn, BorderLayout.NORTH);
-        boardPanel.add(tilePanel, BorderLayout.CENTER);
 
         JPanel scorePanel = new JPanel();
         JLabel scoreBoard = new JLabel("Score board");
@@ -73,6 +56,50 @@ public class GameFrameMaker {
         scorePanel.add(scoreBoard,BorderLayout.NORTH);
         scorePanel.add(score1Label,BorderLayout.CENTER);
         scorePanel.add(score2Label,BorderLayout.SOUTH);
+
+        JPanel boardPanel = new JPanel();
+        boardPanel.setLayout(new BorderLayout());
+        boardPanel.setBorder(BorderFactory.createEmptyBorder(10,30,0,30));
+        JLabel indicateTurn = new JLabel(players[0].getPlayerName() + " can now play.");
+
+        JButton[][] tileButtons = new JButton[board.getHeight()][board.getWidth()];
+        JPanel tilePanel = new JPanel();
+        tilePanel.setLayout(new GridLayout(board.getHeight(),board.getWidth()));
+        Tile[][] tilesForButtons = board.getTiles();
+        for (int i = 0; i < board.getHeight(); i++) {
+            for (int j = 0; j < board.getWidth(); j++) {
+                Tile clickedTile = tilesForButtons[i][j];
+                tileButtons[i][j]= createTileButton(clickedTile);
+                final JButton buttonForTile = tileButtons[i][j]; //has to be final or can't be called in anonymous actionPerformed-innerclass
+                tilePanel.add(tileButtons[i][j]);
+                tileButtons[i][j].setActionCommand(tilesForButtons[i][j].getDownsideValue());
+                tileButtons[i][j].addActionListener(new TileButtonListener(clickedTile) {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        if (game.lastTurnedTile == null) {
+                            game.turnFirstTile(players, clickedTile);
+                            writeButtonText(clickedTile,buttonForTile);
+                            game.setLastTurnedTile(clickedTile);
+                            game.setLastClickedButton(buttonForTile);
+                        } else {
+                            game.turnSecondTile(players,clickedTile);
+                            writeButtonText(clickedTile,buttonForTile);
+
+                            game.checkTileMatch(game.lastTurnedTile,clickedTile,players,game);
+                            writeButtonText(game.lastTurnedTile,game.lastClickedButton);
+                            writeButtonText(clickedTile,buttonForTile);
+                            game.setLastTurnedTile(null); //erase lastTurnedTile so a new turn can start
+                            game.setLastClickedButton(null);
+                            indicateTurn.setText(players[0].getPlayerName() + " can now play.");
+                            score1Label.setText(players[0].getPlayerName() + "   " + players[0].getPlayerScore());
+                            score2Label.setText(players[1].getPlayerName() + "   " + players[1].getPlayerScore());
+                        }
+                    }
+                });
+            }
+        }
+        boardPanel.add(indicateTurn, BorderLayout.NORTH);
+        boardPanel.add(tilePanel, BorderLayout.CENTER);
 
         gameFrame.setLayout(new BorderLayout());
         gameFrame.getContentPane().add(gameName, BorderLayout.NORTH);

@@ -8,20 +8,13 @@ public class Tile {
     private final String upsideValue = "Turn me!";
     //String that is visible if tile has been turned, eg. "Apple".
     private String downsideValue;
+    //Value that keeps track how many times a tile has been turned. Will be used for the scoring system
+    private int nbTimesTurned;
 
-    public Tile(boolean isTurned, String upsideValue, String downsideValue) {
+    public Tile(boolean isTurned, String upsideValue, String downsideValue,int nbTimesTurned) {
         this.isTurned = isTurned;
         this.downsideValue = downsideValue;
-    }
-
-
-    public boolean turnTile() {
-        if (isTurned) {
-            isTurned = false;
-        } else {
-            isTurned = true;
-        }
-        return isTurned;
+        this.setNbTimesTurned(nbTimesTurned);
     }
 
     public void setTurned(boolean turned) {
@@ -38,5 +31,13 @@ public class Tile {
 
     public String getDownsideValue() {
         return downsideValue;
+    }
+
+    public int getNbTimesTurned() {
+        return nbTimesTurned;
+    }
+
+    public void setNbTimesTurned(int nbTimesTurned) {
+        this.nbTimesTurned = nbTimesTurned;
     }
 }

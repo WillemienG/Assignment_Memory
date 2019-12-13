@@ -54,9 +54,15 @@ public class HumanPlayer extends Player {
         return pickedTileCo;
     }
 
-    public void addScore() {
-        int oldScore = this.getPlayerScore();
-        int newScore = oldScore + 1;
+    /**This method raises the score when a match has been found. Because the 2nd player has already seen the move of the first player
+     * and thus has an advantage, the added score is adjusted with the number of times the matching tiles have been turned. This way players get
+     * 'punished' for mindlessly playing with trial-and-error tactics.
+     * @param nbTimesTurned1 the times tile1 has been turned before it was matched to tile2
+     * @param nbTimesTurned2 the times tile2 has been turned before it was matched to tile1
+     */
+    public void addScore(int nbTimesTurned1, int nbTimesTurned2,int nbPairs, int nbTilesMatched) {
+        double oldScore = this.getPlayerScore();
+        double newScore = oldScore + (1 + 1/(nbTimesTurned1*nbTimesTurned2/2));
         this.setPlayerScore(newScore);
     }
 }

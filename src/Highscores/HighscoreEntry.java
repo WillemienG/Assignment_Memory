@@ -2,12 +2,12 @@ package Highscores;
 
 public class HighscoreEntry {
     String playerName;
-    int playerScore;
+    double playerScore;
     String difficultyLevel;
 
 
 
-    public HighscoreEntry(String playerName, int playerScore, String difficultyLevel) {
+    public HighscoreEntry(String playerName, double playerScore, String difficultyLevel) {
         this.setPlayerName(playerName);
         this.setPlayerScore(playerScore);
         this.setDifficultyLevel(difficultyLevel);
@@ -21,11 +21,11 @@ public class HighscoreEntry {
         this.playerName = playerName;
     }
 
-    public int getPlayerScore() {
+    public double getPlayerScore() {
         return playerScore;
     }
 
-    public void setPlayerScore(int playerScore) {
+    public void setPlayerScore(double playerScore) {
         this.playerScore = playerScore;
     }
 
