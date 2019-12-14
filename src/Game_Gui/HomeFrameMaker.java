@@ -1,13 +1,9 @@
 package Game_Gui;
 
-import Highscores.HighscoreUpdater;
-import Players.Player;
 import Main.Game;
 import Game_Gui.ActionListeners.StartButtonListener;
 
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -132,20 +128,15 @@ public class HomeFrameMaker {
                 String player2ChosenName = player2Name.getText();
 
                 myGame.prepareGame(nbRows,nbColumns,diffLevel,playerMode,player1ChosenName,player2ChosenName);
-                Player player1 = myGame.player1;
-                Player player2 = myGame.player2;
-                Player[] players = {player1, player2};
                 GameFrameMaker gameFrameMaker = new GameFrameMaker();
-                gameFrameMaker.makeGameFrame(myGame.board,players,myGame);
-
-                HighscoreUpdater highscoreUpdater = new HighscoreUpdater();
-                highscoreUpdater.writeHighscores(players,diffLevel);
+                gameFrameMaker.makeGameFrame(myGame);
             }
         });
 
         JPanel optionsPanelNew = new JPanel();
         optionsPanelNew.setLayout(new FlowLayout(FlowLayout.CENTER,20,20));
-        optionsPanelNew.add(makeOptionsPanel());
+        ComponentsContainersFactory componentsContainersFactory = new ComponentsContainersFactory();
+        optionsPanelNew.add(componentsContainersFactory.makeOptionsPanel());
         optionsPanelNew.add(startButton);
 
         homeFrame.getContentPane().add(diffLevPanel);
@@ -155,59 +146,4 @@ public class HomeFrameMaker {
         homeFrame.setVisible(true);
     }
 
-    protected JPanel makeOptionsPanel() {
-        JPanel optionsPanel = new JPanel();
-
-        JButton showRules = new JButton("Rules");
-        showRules.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                RulesFrameMaker rulesFrameMaker = new RulesFrameMaker();
-                rulesFrameMaker.readRules();
-            }
-        });
-
-        JButton showHighscores = new JButton("Highscores");
-        showHighscores.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                HighscoreFrameMaker highscoreFrameMaker = new HighscoreFrameMaker();
-                highscoreFrameMaker.makeHighscoreFrame();
-            }
-        });
-
-        JButton quitButton = new JButton("Quit");
-        quitButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JFrame quitFrame = new JFrame("Quit game");
-                quitFrame.getContentPane().setLayout(new BoxLayout(quitFrame.getContentPane(),BoxLayout.Y_AXIS));
-                quitFrame.getContentPane().add(new JLabel("Are you sure you want to quit?"));
-                JButton quitButtonYes = new JButton("Yes, quit game");
-                quitButtonYes.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        System.exit(0);
-                    }
-                });
-                JButton quitButtonNo = new JButton("No, go back.");
-                quitButtonNo.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        quitFrame.setVisible(false);
-                    }
-                });
-                quitFrame.getContentPane().add(quitButtonYes);
-                quitFrame.getContentPane().add(quitButtonNo);
-                quitFrame.pack();
-                quitFrame.setVisible(true);
-            }
-        });
-
-        optionsPanel.setLayout(new FlowLayout(FlowLayout.CENTER,20,20));
-        optionsPanel.add(showRules);
-        optionsPanel.add(showHighscores);
-        optionsPanel.add(quitButton);
-        return optionsPanel;
-    }
 }

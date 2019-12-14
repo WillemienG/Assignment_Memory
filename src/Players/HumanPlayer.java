@@ -5,18 +5,8 @@ import java.util.Scanner;
 
 public class HumanPlayer extends Player {
 
-    private String playerName;
-
     public HumanPlayer(int playerScore, String playerName) {
         super(playerScore, playerName);
-    }
-
-    public static String askPlayerName() {
-        Scanner scan = new Scanner(System.in);
-        String playerName;
-        System.out.println("Name of player:");
-        playerName = scan.nextLine();
-        return playerName;
     }
 
     /**

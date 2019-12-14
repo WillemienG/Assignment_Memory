@@ -1,55 +1,28 @@
 package Game_Gui;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.concurrent.TimeUnit;
 
-import Main.Game;
-import Board.Board;
 import Board.Tile;
+import Game_Gui.ActionListeners.NextButtonListener;
 import Game_Gui.ActionListeners.TileButtonListener;
-import Players.Player;
+import Main.Game;
 
 public class GameFrameMaker {
 
-    public JButton createTileButton(Tile tile) {
-        JButton buttonForTile;
-        if (tile.isTurned()) {
-            buttonForTile = new JButton(tile.getDownsideValue());
-            buttonForTile.setEnabled(false);
-        } else {
-            buttonForTile = new JButton(tile.getUpsideValue());
-            buttonForTile.setEnabled(true);
-        }
-        return buttonForTile;
-    }
+    ComponentsContainersFactory componentsContainersFactory = new ComponentsContainersFactory();
 
-    public void writeButtonText(Tile tile, JButton button) {
-        if (tile.isTurned()) {
-            button.setText(tile.getDownsideValue());
-            button.setEnabled(false);
-        } else {
-            button.setText(tile.getUpsideValue());
-            button.setEnabled(true);
-        }
-    }
-
-    public void makeGameFrame(Board board, Player[] players, Game game) {
+    public void makeGameFrame(Game game) {
         JFrame gameFrame = new JFrame("Memory - the game");
         JLabel gameName = new JLabel("Memory - the game");
         gameName.setFont(new Font("Tahoma",Font.BOLD,20));
         gameName.setBorder(BorderFactory.createEmptyBorder(10,30,0,30));
 
-
-
         JPanel scorePanel = new JPanel();
         JLabel scoreBoard = new JLabel("Score board");
         scoreBoard.setFont(new Font("Tahoma",Font.BOLD,15));
-        JLabel score1Label = new JLabel(players[0].getPlayerName() + "   " + players[0].getPlayerScore());
-        JLabel score2Label = new JLabel(players[1].getPlayerName() + "   " + players[1].getPlayerScore());
+        JLabel score1Label = new JLabel(game.getPlayers()[0].getPlayerName() + "   " + game.getPlayers()[0].getPlayerScore());
+        JLabel score2Label = new JLabel(game.getPlayers()[1].getPlayerName() + "   " + game.getPlayers()[1].getPlayerScore());
 
         scorePanel.setLayout(new BorderLayout());
         scorePanel.setBorder(BorderFactory.createEmptyBorder(10,30,200,10));
@@ -57,59 +30,56 @@ public class GameFrameMaker {
         scorePanel.add(score1Label,BorderLayout.CENTER);
         scorePanel.add(score2Label,BorderLayout.SOUTH);
 
-        JPanel boardPanel = new JPanel();
-        boardPanel.setLayout(new BorderLayout());
-        boardPanel.setBorder(BorderFactory.createEmptyBorder(10,30,0,30));
-        JLabel indicateTurn = new JLabel(players[0].getPlayerName() + " can now play.");
-
-        JButton[][] tileButtons = new JButton[board.getHeight()][board.getWidth()];
-        JPanel tilePanel = new JPanel();
-        tilePanel.setLayout(new GridLayout(board.getHeight(),board.getWidth()));
-        Tile[][] tilesForButtons = board.getTiles();
-        for (int i = 0; i < board.getHeight(); i++) {
-            for (int j = 0; j < board.getWidth(); j++) {
-                Tile clickedTile = tilesForButtons[i][j];
-                tileButtons[i][j]= createTileButton(clickedTile);
-                final JButton buttonForTile = tileButtons[i][j]; //has to be final or can't be called in anonymous actionPerformed-innerclass
-                tilePanel.add(tileButtons[i][j]);
-                tileButtons[i][j].setActionCommand(tilesForButtons[i][j].getDownsideValue());
-                tileButtons[i][j].addActionListener(new TileButtonListener(clickedTile) {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        if (game.lastTurnedTile == null) {
-                            game.turnFirstTile(players, clickedTile);
-                            writeButtonText(clickedTile,buttonForTile);
-                            game.setLastTurnedTile(clickedTile);
-                            game.setLastClickedButton(buttonForTile);
-                        } else {
-                            game.turnSecondTile(players,clickedTile);
-                            writeButtonText(clickedTile,buttonForTile);
-
-                            game.checkTileMatch(game.lastTurnedTile,clickedTile,players,game);
-                            writeButtonText(game.lastTurnedTile,game.lastClickedButton);
-                            writeButtonText(clickedTile,buttonForTile);
-                            game.setLastTurnedTile(null); //erase lastTurnedTile so a new turn can start
-                            game.setLastClickedButton(null);
-                            indicateTurn.setText(players[0].getPlayerName() + " can now play.");
-                            score1Label.setText(players[0].getPlayerName() + "   " + players[0].getPlayerScore());
-                            score2Label.setText(players[1].getPlayerName() + "   " + players[1].getPlayerScore());
-                        }
-                    }
-                });
-            }
-        }
-        boardPanel.add(indicateTurn, BorderLayout.NORTH);
-        boardPanel.add(tilePanel, BorderLayout.CENTER);
+        JPanel boardPanel = makeBoardPanel(game,score1Label,score2Label);
 
         gameFrame.setLayout(new BorderLayout());
         gameFrame.getContentPane().add(gameName, BorderLayout.NORTH);
         gameFrame.getContentPane().add(boardPanel, BorderLayout.WEST);
         gameFrame.getContentPane().add(scorePanel, BorderLayout.EAST);
-        HomeFrameMaker homeFrameMaker = new HomeFrameMaker();
-        gameFrame.getContentPane().add(homeFrameMaker.makeOptionsPanel(), BorderLayout.SOUTH);
+        gameFrame.getContentPane().add(componentsContainersFactory.makeOptionsPanel(), BorderLayout.SOUTH);
 
         gameFrame.pack();
         gameFrame.setVisible(true);
+    }
+
+    /**This method makes a panel with the following components:
+     * the buttons tileButtons which represent the memory tiles, put in a grid of height x width
+     * the label IndicateTurn which tells which player is on
+     * the button nextButton which needs to be clicked when a turn is over. This triggers the nextButtonActionListener.
+     * @param game, the game-object which contains all of the relevant information for the game
+     * @param score1Label , the label that shows the score of the player who is on, needs to be updated
+     * @param score2Label , the label that shows the score of the other player, needs to be updated
+     * @return a JPanel, boardPanel, to be put in the gameFrame
+     */
+    public JPanel makeBoardPanel(Game game, JLabel score1Label, JLabel score2Label) {
+        JPanel tilePanel = new JPanel();
+        JButton[][] tileButtons = new JButton[game.getBoard().getHeight()][game.getBoard().getWidth()];
+        tilePanel.setLayout(new GridLayout(game.getBoard().getHeight(),game.getBoard().getWidth()));
+        Tile[][] tilesForButtons = game.getBoard().getTiles();
+
+        JLabel indicateTurn = new JLabel(game.getPlayers()[0].getPlayerName() + " can now play.");
+        JButton nextButton = new JButton("Next step");
+        nextButton.setEnabled(false);
+        nextButton.addActionListener(new NextButtonListener(game,score1Label,score2Label,indicateTurn,tileButtons,nextButton));
+        for (int i = 0; i < game.getBoard().getHeight(); i++) {
+            for (int j = 0; j < game.getBoard().getWidth(); j++) {
+                Tile clickedTile = tilesForButtons[i][j];
+                tileButtons[i][j]= componentsContainersFactory.createTileButton(clickedTile);
+                final JButton clickedButton = tileButtons[i][j]; //has to be final or can't be called in anonymous actionPerformed-innerclass
+                tilePanel.add(tileButtons[i][j]);
+                tileButtons[i][j].setActionCommand(tilesForButtons[i][j].getDownsideValue());
+                tileButtons[i][j].addActionListener(new TileButtonListener(i,j,game,clickedButton,nextButton));
+            }
+        }
+
+        JPanel boardPanel = new JPanel();
+        boardPanel.setLayout(new BorderLayout());
+        boardPanel.setBorder(BorderFactory.createEmptyBorder(10,30,0,30));
+
+        boardPanel.add(indicateTurn, BorderLayout.NORTH);
+        boardPanel.add(tilePanel, BorderLayout.CENTER);
+        boardPanel.add(nextButton, BorderLayout.SOUTH);
+        return boardPanel;
     }
 
 }

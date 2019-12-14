@@ -1,5 +1,6 @@
 package Highscores;
 
+import Main.Game;
 import Players.Player;
 
 import java.io.File;
@@ -67,8 +68,8 @@ public class HighscoreUpdater {
         }
     }
 
-    public void writeHighscores(Player[] players, String difficultyLevel) {
-        List<HighscoreEntry> highscores = updateHighscores(players, difficultyLevel);
+    public void writeHighscores(Game game) {
+        List<HighscoreEntry> highscores = updateHighscores(game.getPlayers(), game.getDifficultyLevel());
         try (FileWriter csvWriter = new FileWriter("Highscores.csv")) {
             File f = new File("Highscores.csv");
             f.createNewFile();

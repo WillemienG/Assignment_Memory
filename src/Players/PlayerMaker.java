@@ -3,7 +3,7 @@ package Players;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public class MakePlayers {
+public class PlayerMaker {
 
     public int askPlayerMode() {
         Scanner scan = new Scanner(System.in);
