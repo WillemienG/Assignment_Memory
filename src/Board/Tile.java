@@ -17,6 +17,16 @@ public class Tile {
         this.setNbTimesTurned(nbTimesTurned);
     }
 
+    public String getText() {
+        String tileText;
+        if (isTurned()) {
+            tileText = getDownsideValue();
+        } else {
+            tileText = getUpsideValue();
+        }
+        return tileText;
+    }
+
     public void setTurned(boolean turned) {
         isTurned = turned;
     }

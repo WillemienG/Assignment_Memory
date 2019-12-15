@@ -117,26 +117,12 @@ public class HomeFrameMaker {
 
         JButton startButton = new JButton("Start game");
         Game myGame = new Game();
-        startButton.addActionListener(new StartButtonListener(myGame) {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int nbRows = (Integer) rowSpinner.getValue();
-                int nbColumns = (Integer) columnSpinner.getValue();
-                String diffLevel = diffLevelGroup.getSelection().getActionCommand();
-                String playerMode = playerModeGroup.getSelection().getActionCommand();
-                String player1ChosenName = player1Name.getText();
-                String player2ChosenName = player2Name.getText();
-
-                myGame.prepareGame(nbRows,nbColumns,diffLevel,playerMode,player1ChosenName,player2ChosenName);
-                GameFrameMaker gameFrameMaker = new GameFrameMaker();
-                gameFrameMaker.makeGameFrame(myGame);
-            }
-        });
+        startButton.addActionListener(new StartButtonListener(myGame, rowSpinner, columnSpinner, diffLevelGroup, playerModeGroup, player1Name, player2Name));
 
         JPanel optionsPanelNew = new JPanel();
         optionsPanelNew.setLayout(new FlowLayout(FlowLayout.CENTER,20,20));
-        ComponentsContainersFactory componentsContainersFactory = new ComponentsContainersFactory();
-        optionsPanelNew.add(componentsContainersFactory.makeOptionsPanel());
+        GUIStuffFactory guiStuffFactory = new GUIStuffFactory();
+        optionsPanelNew.add(guiStuffFactory.makeOptionsPanel());
         optionsPanelNew.add(startButton);
 
         homeFrame.getContentPane().add(diffLevPanel);

@@ -52,7 +52,7 @@ public class HumanPlayer extends Player {
      */
     public void addScore(int nbTimesTurned1, int nbTimesTurned2,int nbPairs, int nbTilesMatched) {
         double oldScore = this.getPlayerScore();
-        double newScore = oldScore + (1 + 1/(nbTimesTurned1*nbTimesTurned2/2));
+        double newScore = oldScore + (1 + 3/(nbTimesTurned1*nbTimesTurned2));
         this.setPlayerScore(newScore);
     }
 }

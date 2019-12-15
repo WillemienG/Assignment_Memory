@@ -45,6 +45,7 @@ public class HighscoreUpdater {
                     HighscoreEntry highscoreEntry1 = new HighscoreEntry(player.getPlayerName(), score, difficultyLevel);
                     highscores.add(i + 1, highscoreEntry1);
                     isHighscore = true;
+                    break;
                 }
             }
             if (!isHighscore) {

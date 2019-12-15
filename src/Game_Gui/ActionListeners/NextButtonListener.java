@@ -1,7 +1,8 @@
 package Game_Gui.ActionListeners;
 
 import Board.Tile;
-import Game_Gui.ComponentsContainersFactory;
+import Game_Gui.GUIStuffFactory;
+import Game_Gui.GUIStuffFactory;
 import Highscores.HighscoreUpdater;
 import Main.Game;
 
@@ -12,7 +13,7 @@ import java.awt.event.ActionListener;
 
 public class NextButtonListener implements ActionListener {
 
-    ComponentsContainersFactory componentsContainersFactory = new ComponentsContainersFactory();
+    GUIStuffFactory guiStuffFactory = new GUIStuffFactory();
     Game game;
     JLabel score1Label;
     JLabel score2Label;
@@ -31,30 +32,28 @@ public class NextButtonListener implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        updateScoreBoard(score1Label, score2Label);
+        refreshAllButtons(tileButtons);
         if (game.isGameStillGoing()) {
-            updateScoreBoard(score1Label, score2Label);
             game.setFirstTurnedTile(null);
             game.setLastTurnedTile(null);
-            refreshAllButtons(tileButtons);
+            game.determineNextPlayer();
             indicateTurn.setText(game.getPlayers()[0].getPlayerName() + " can now play.");
             game.setSelectionPossible(true);
             if (game.getPlayers()[0].getPlayerName().equals("the computer")) {
                 clickComputerTile(nextButton);
-                if (game.getPlayers()[0].getPlayerName().equals("the computer")) {
-                    clickComputerTile(nextButton);
-                }
             }
             refreshAllButtons(tileButtons);
         } else {
             HighscoreUpdater highscoreUpdater = new HighscoreUpdater();
             highscoreUpdater.writeHighscores(game);
-            componentsContainersFactory.makeEndFrame(game);
+            guiStuffFactory.makeEndFrame(game);
         }
     }
 
-    //TODO: als de computer een paar vindt, blijft de 2e daarvan niet omgedraaid waardoor het spel in de war is :(
-    /** This method makes the computer pick a random tile from the board-tiles and makes it click.
-     * After the click, the normal TileActionListener is triggered.
+    /** This method makes the computer pick random coordinates to pick a tile from game.getBoard().getTiles(). This picking process is repeated if the randomly picked tile is already turned.
+     * A normal turnTile is then played. Then, if the computer can still play, a second tile is chosen and a turnTile is played.
+     * A window pops up with the values the computer found and the nextButton is clicked and its NextButtonListener triggered.
      * @param nextButton , the buttons from which the computer can choose.
      */
     private void clickComputerTile(JButton nextButton) {
@@ -80,21 +79,22 @@ public class NextButtonListener implements ActionListener {
                     isTurnable2 = true;
                 }
             }
+            chosenTile2.setTurned(true);
             game.turnSecondTile(chosenTile2);
         }
-        componentsContainersFactory.makeComputerFrame(chosenTile1,chosenTile2,pickedTileCo1,pickedTileCo2);
+        guiStuffFactory.makeComputerFrame(chosenTile1,chosenTile2,pickedTileCo1,pickedTileCo2);
         nextButton.setEnabled(true);
         nextButton.doClick();
     }
 
-    /** This method loops over all the tileButtons and associates them with the corresponding Tile-object.
-     * It checks whether this Tile-object is turned or not and updates the button text according to this turned state.
+    /** This method loops over JButton[][] tileButtons and Tile[][]. It updates the text on the tileButton according to the isTurned (true or false) of the Tile
+     * with the same coordinates in their respective matrices.
      * @param tileButtons , the buttons which are checked.
      */
     private void refreshAllButtons(JButton[][] tileButtons) {
         for (int i = 0; i < game.getBoard().getHeight(); i++) {
             for (int j = 0; j < game.getBoard().getWidth(); j++) {
-                componentsContainersFactory.writeButtonText(game.getBoard().getTiles()[i][j],tileButtons[i][j]);
+                guiStuffFactory.writeButtonText(game.getBoard().getTiles()[i][j],tileButtons[i][j]);
             }
         }
     }
@@ -105,8 +105,8 @@ public class NextButtonListener implements ActionListener {
      * @param score2Label , the second label that needs to be updated.
      */
     private void updateScoreBoard(JLabel score1Label, JLabel score2Label) {
-        score1Label.setText(game.getPlayers()[0].getPlayerName() + "   " + game.getPlayers()[0].getPlayerScore());
-        score2Label.setText(game.getPlayers()[1].getPlayerName() + "   " + game.getPlayers()[1].getPlayerScore());
+        score1Label.setText(game.getPlayers()[0].getPlayerName() + "   " + String.format("%.2f",game.getPlayers()[0].getPlayerScore()));
+        score2Label.setText(game.getPlayers()[1].getPlayerName() + "   " + String.format("%.2f",game.getPlayers()[1].getPlayerScore()));
         if (game.getPlayers()[0].getPlayerScore() > game.getPlayers()[1].getPlayerScore()) {
             score2Label.setBorder(null);
             score1Label.setBorder(BorderFactory.createLineBorder(Color.GREEN));

@@ -12,7 +12,7 @@ public class Game {
     private Board board;
     private Player[] players = new Player[2];
     private int nbPairs;
-    private int nbTilesMatched;
+    private int nbTilesMatched = 0;
     private Tile lastTurnedTile;
     private Tile firstTurnedTile;
     private boolean isSelectionPossible = true;
@@ -38,20 +38,18 @@ public class Game {
         this.players[1] = playerMaker.makePlayer2(playerMode, player2Name);
     }
 
-   public void turnFirstTile(Tile tileToTurn1) {
+    public void turnFirstTile(Tile tileToTurn1) {
         this.setFirstTurnedTile(tileToTurn1);
         tileToTurn1.setTurned(true);
         tileToTurn1.setNbTimesTurned(tileToTurn1.getNbTimesTurned()+1);
         switch (tileToTurn1.getDownsideValue()) {
             case "Skip":
                 this.setSelectionPossible(false);
-                determineNextPlayer();
                 break;
             case "Shuffle":
                 BoardDesigner boardDesigner = new BoardDesigner();
                 this.board = boardDesigner.shuffleBoard(board, board.getHeight(), board.getWidth());
                 this.setSelectionPossible(false);
-                determineNextPlayer();
                 break;
             default:
                 this.setSelectionPossible(true);
@@ -64,25 +62,22 @@ public class Game {
         tileToTurn2.setNbTimesTurned(tileToTurn2.getNbTimesTurned()+1);
         switch (tileToTurn2.getDownsideValue()) {
             case "Skip":
-                determineNextPlayer();
                 firstTurnedTile.setTurned(false);
                 break;
             case "Shuffle":
                 BoardDesigner boardDesigner = new BoardDesigner();
                 this.board = boardDesigner.shuffleBoard(board, board.getHeight(), board.getWidth());
-                determineNextPlayer();
                 firstTurnedTile.setTurned(false);
                 break;
             default:
                 checkTileMatch();
-                determineNextPlayer();
         }
     }
 
     public void checkTileMatch() {
         if (firstTurnedTile.getDownsideValue().equals(lastTurnedTile.getDownsideValue())) {
             players[0].addScore(firstTurnedTile.getNbTimesTurned(), lastTurnedTile.getNbTimesTurned(), nbPairs, nbTilesMatched);
-            setNbTilesMatched(getNbTilesMatched() + 1);
+            this.setNbTilesMatched(getNbTilesMatched() + 1);
         } else {
             firstTurnedTile.setTurned(false);
             lastTurnedTile.setTurned(false);
@@ -93,14 +88,12 @@ public class Game {
      * This method swaps the two players of the game, so the turn is passed from one player to the other.
      * Both players are temporarily stored in temp-objects and then inserted in a Players.Player-array again, but in a swapped order.
      *
-     * @return a 1-by-2-Players.Player-array in which position[0] = player who gets to play next.
      */
-    public Player[] determineNextPlayer() {
+    public void determineNextPlayer() {
         Player temp1 = players[0];
         Player temp2 = players[1];
         players[0] = temp2;
         players[1] = temp1;
-        return players;
     }
 
     /** This method indicates whether the game is finished.
@@ -129,20 +122,12 @@ public class Game {
         return board;
     }
 
-    public Tile getLastTurnedTile() {
-        return lastTurnedTile;
-    }
-
     public void setLastTurnedTile(Tile lastTurnedTile) {
         this.lastTurnedTile = lastTurnedTile;
     }
 
     public Player[] getPlayers() {
         return players;
-    }
-
-    public int getNbPairs() {
-        return nbPairs;
     }
 
     public int getNbTilesMatched() {
@@ -155,10 +140,6 @@ public class Game {
 
     public boolean isSelectionPossible() {
         return isSelectionPossible;
-    }
-
-    public void setNbPairs(int nbPairs) {
-        this.nbPairs = nbPairs;
     }
 
     public void setNbTilesMatched(int nbTilesMatched) {

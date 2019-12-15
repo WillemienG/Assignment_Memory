@@ -9,8 +9,7 @@ public enum DifficultyLevel implements BoardCharacteristics {
     private int height;
     private int nbPairs;
 
-
-    //Constructor that forces every Enum-level to have a width and height
+    //Constructor that forces every Enum-level to have a width, height and number or pairs (=(nbTiles-nbSpecialTiles)/2)
     DifficultyLevel(int height, int width, int nbPairs) {
         this.width = width;
         this.height = height;

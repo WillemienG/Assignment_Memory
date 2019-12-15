@@ -1,7 +1,5 @@
 package Players;
 
-import Main.Game;
-
 import java.util.concurrent.ThreadLocalRandom;
 
 public class ComputerPlayer extends Player{
@@ -26,7 +24,7 @@ public class ComputerPlayer extends Player{
 
     public void addScore(int nbTimesTurned1, int nbTimesTurned2,int nbPairs, int nbTilesMatched) {
         double oldScore = this.getPlayerScore();
-        double newScore = oldScore + nbPairs/nbTilesMatched;
+        double newScore = oldScore + nbPairs/(nbTilesMatched+1);
         this.setPlayerScore(newScore);
     }
 

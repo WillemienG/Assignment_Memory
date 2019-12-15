@@ -10,7 +10,7 @@ import Main.Game;
 
 public class GameFrameMaker {
 
-    ComponentsContainersFactory componentsContainersFactory = new ComponentsContainersFactory();
+    GUIStuffFactory guiStuffFactory = new GUIStuffFactory();
 
     public void makeGameFrame(Game game) {
         JFrame gameFrame = new JFrame("Memory - the game");
@@ -36,7 +36,7 @@ public class GameFrameMaker {
         gameFrame.getContentPane().add(gameName, BorderLayout.NORTH);
         gameFrame.getContentPane().add(boardPanel, BorderLayout.WEST);
         gameFrame.getContentPane().add(scorePanel, BorderLayout.EAST);
-        gameFrame.getContentPane().add(componentsContainersFactory.makeOptionsPanel(), BorderLayout.SOUTH);
+        gameFrame.getContentPane().add(guiStuffFactory.makeOptionsPanel(), BorderLayout.SOUTH);
 
         gameFrame.pack();
         gameFrame.setVisible(true);
@@ -64,7 +64,7 @@ public class GameFrameMaker {
         for (int i = 0; i < game.getBoard().getHeight(); i++) {
             for (int j = 0; j < game.getBoard().getWidth(); j++) {
                 Tile clickedTile = tilesForButtons[i][j];
-                tileButtons[i][j]= componentsContainersFactory.createTileButton(clickedTile);
+                tileButtons[i][j]= guiStuffFactory.createTileButton(clickedTile);
                 final JButton clickedButton = tileButtons[i][j]; //has to be final or can't be called in anonymous actionPerformed-innerclass
                 tilePanel.add(tileButtons[i][j]);
                 tileButtons[i][j].setActionCommand(tilesForButtons[i][j].getDownsideValue());
