@@ -9,7 +9,6 @@ public class ComputerPlayer extends Player{
     }
 
     /**This method lets the computer as opponent pick a tile, by just generating two random coordinates within the board ranges.
-     *
      * @return a 1-by-2 integer-array with coordinates of tile that has to be turned.
      */
     public int[] pickTiles(int height, int width) {
@@ -22,6 +21,13 @@ public class ComputerPlayer extends Player{
         return pickedTileCo;
     }
 
+    /**This method makes the score of a ComputerPlayer increase. This score is weighed by the ratio of total nbPairs and nbTilesMatched, because
+     * the picking is easier when more pairs have been found.
+     * @param nbTimesTurned1
+     * @param nbTimesTurned2
+     * @param nbPairs
+     * @param nbTilesMatched
+     */
     public void addScore(int nbTimesTurned1, int nbTimesTurned2,int nbPairs, int nbTilesMatched) {
         double oldScore = this.getPlayerScore();
         double newScore = oldScore + nbPairs/(nbTilesMatched+1);

@@ -14,6 +14,8 @@ import java.io.InputStreamReader;
 
 public class GUIStuffFactory {
 
+    /**This method makes a pop-up frame with dimension-error message.
+     */
     public void makeDimErrorFrame() {
         JFrame dimErrorFrame = new JFrame("Error");
         dimErrorFrame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
@@ -26,6 +28,15 @@ public class GUIStuffFactory {
         dimErrorFrame.setVisible(true);
     }
 
+    /**This method makes a pop-up frame with information about the computer's turn. If the first picked tile is a Shuffle or Skip,
+     * the Tile-initializer Tile chosenTile2 = new Tile(false,null,"Whatever",0); isn't overwritten and would result in a message about a "Whatever"-tile.
+     * To prevent this from happening, chosenTile2 is only added when chosenTile1 is a 'normal' tile.
+     *
+     * @param computerTile1 , the first picked tile.
+     * @param computerTile2 , the second picked tile.
+     * @param pickedTileCo1 , coordinates of computerTile1
+     * @param pickedTileCo2 , coordinates of computerTile2
+     */
     public void makeComputerFrame(Tile computerTile1, Tile computerTile2,int[] pickedTileCo1,int[] pickedTileCo2) {
         JFrame computerFrame = new JFrame("The computer has played");
         computerFrame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
@@ -39,13 +50,18 @@ public class GUIStuffFactory {
         computerFrame.getContentPane().setLayout(new GridLayout(3,1));
         computerFrame.getContentPane().add(computerText);
         computerFrame.getContentPane().add(computerText1);
-        if (!computerTile2.getDownsideValue().equals("Whatever")) {
+        if (!computerTile1.getDownsideValue().equals("Shuffle") || !computerTile1.getDownsideValue().equals("Skip")) {
             computerFrame.getContentPane().add(computerText2);
         }
         computerFrame.pack();
         computerFrame.setVisible(true);
     }
 
+    /**This method creates a new JButton tileButton, with text and enabled-status made by writeButtonText().
+     *
+     * @param tile , the Tile which lends his downside- or upsideValue to the buttonText
+     * @return a JButton with the correct text and enabled/disabled.
+     */
     public JButton createTileButton(Tile tile) {
         JButton buttonForTile;
         buttonForTile = new JButton();
@@ -53,20 +69,32 @@ public class GUIStuffFactory {
         return buttonForTile;
     }
 
+    /**This method sets the text and enabled-status of a JButton depending on the isTurned-value of the corresponding Tile. Disabled when the tile is turned, enabled when not.
+     *
+     * @param tile , the Tile the Tile which lends his downside- or upsideValue to the buttonText and isTurned-value to setEnabled()
+     * @param button , the JButton whose parameters are being set.
+     */
     public void writeButtonText(Tile tile, JButton button) {
         button.setText(tile.getText());
         button.setEnabled(!tile.isTurned());
     }
 
+    /**This method makes a pop-up frame with dimension-error message when called.
+     */
     public void makeNotYourTurnFrame() {
         JFrame notYourTurnFrame = new JFrame("Not your turn now");
-        JLabel notYourTurn = new JLabel("Sorry about that, but you can't play now!");
+        JLabel notYourTurn = new JLabel("Sorry about that, but you can't play now! Click on 'Next step' to make the game continue.");
         notYourTurn.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
         notYourTurnFrame.getContentPane().add(notYourTurn);
         notYourTurnFrame.pack();
         notYourTurnFrame.setVisible(true);
     }
 
+    /**This method makes a JPanel optionsPanel in FlowLayout which is added to frames. It contains a JButton showRules that opens a JFrame with the rules read out.
+     * Then a JButton showHighscores that opens a JFrame with the highscores nicely read out in a table.
+     * Then a JButton quitButton that, when pressed gives the player the option to go back or quit the game.
+     * @return a JPanel with all option buttons added.
+     */
     protected JPanel makeOptionsPanel() {
         JPanel optionsPanel = new JPanel();
 
@@ -126,6 +154,8 @@ public class GUIStuffFactory {
         return optionsPanel;
     }
 
+    /**This method reads the Rules.txt-file and reads it out with a BufferedReader, throws IO-exception when something goes wrong during the reading process.
+     */
     public void makeRulesFrame() {
         JFrame rulesFrame = new JFrame("Memory: the rules");
         rulesFrame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
@@ -144,6 +174,9 @@ public class GUIStuffFactory {
         rulesFrame.setVisible(true);
     }
 
+    /**This method makes a pop-up frame that contains an end message and congratulations to the winner/winners (if ex aequo).
+     * @param game , contains needed info about player names and method to determine the winner.
+     */
     public void makeEndFrame(Game game) {
         JFrame endFrame = new JFrame("Memory - the end");
         JLabel endLabel = new JLabel("The end. Hope you had fun :)");

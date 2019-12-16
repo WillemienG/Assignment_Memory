@@ -4,7 +4,7 @@ public class Tile {
 
     //Boolean that tells whether a tile has been turned or not.
     private boolean isTurned;
-    //String that is visible if tile hasn't been turned yet, eg. "Turn me!". This String is the same for every newly created tile and shouldn't be changed ==> final variable
+    //String that is visible if tile hasn't been turned yet. This String is the same for every newly created tile and shouldn't be changed ==> final variable
     private final String upsideValue = "Turn me!";
     //String that is visible if tile has been turned, eg. "Apple".
     private String downsideValue;
@@ -17,6 +17,9 @@ public class Tile {
         this.setNbTimesTurned(nbTimesTurned);
     }
 
+    /**This method determines which String should be shown for a certain Tile, depending on its isTurned()-value.
+     * @return tileText, the String with either downsideValue, either upsideValue
+     */
     public String getText() {
         String tileText;
         if (isTurned()) {

@@ -14,10 +14,9 @@ public class TileButtonListener implements ActionListener {
     Game game;
     JButton clickedButton;
     JButton nextButton;
-   GUIStuffFactory guiStuffFactory = new GUIStuffFactory();
+    GUIStuffFactory guiStuffFactory = new GUIStuffFactory();
 
     /** This constructor creates a new version of the ActionListener for when a Tile is clicked.
-     *
      * @param i , the i-coordinate of the corresponding Tile on which the actions will be performed
      * @param j , the j-coordinate of the corresponding Tile on which the actions will be performed
      * @param game , the game-object which contains all of the relevant information for the game

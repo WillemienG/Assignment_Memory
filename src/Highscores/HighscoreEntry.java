@@ -1,12 +1,15 @@
 package Highscores;
 
 public class HighscoreEntry {
-    String playerName;
-    double playerScore;
-    String difficultyLevel;
+    private String playerName;
+    private double playerScore;
+    private String difficultyLevel;
 
-
-
+    /**This constructor makes HighscoreEntry-objects with 3 fields: name, score, difficultyLevel. These objects will be used to store the data from the Highscores.csv file.
+     * @param playerName
+     * @param playerScore
+     * @param difficultyLevel
+     */
     public HighscoreEntry(String playerName, double playerScore, String difficultyLevel) {
         this.setPlayerName(playerName);
         this.setPlayerScore(playerScore);

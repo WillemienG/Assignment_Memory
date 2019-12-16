@@ -10,8 +10,12 @@ import Main.Game;
 
 public class GameFrameMaker {
 
-    GUIStuffFactory guiStuffFactory = new GUIStuffFactory();
+    GUIStuffFactory guiStuffFactory = new GUIStuffFactory();    //needed to call methods of this class
 
+    /**This method creates the frame where the game will be played. The main components are the boardPanel (that consists of the tileButton grid, the
+     * indicateTurnLabel and the nextButton), the scoreBoard (speaks for itself) and the optionsPanel that is the same as in the other frames.
+     * @param game , the Game-object that has all relevant information about dimensions, tiles, players, difficultyLevel and scores.
+     */
     public void makeGameFrame(Game game) {
         JFrame gameFrame = new JFrame("Memory - the game");
         JLabel gameName = new JLabel("Memory - the game");

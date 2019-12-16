@@ -2,7 +2,6 @@ package Game_Gui.ActionListeners;
 
 import Board.Tile;
 import Game_Gui.GUIStuffFactory;
-import Game_Gui.GUIStuffFactory;
 import Highscores.HighscoreUpdater;
 import Main.Game;
 
@@ -30,6 +29,14 @@ public class NextButtonListener implements ActionListener {
         this.nextButton = nextButton;
     }
 
+    /**This method takes care of finishing up a played turn and preparing everything for the next turn.
+     * Score board is updated with the newest scores, all buttons are checked for which text they should display.
+     * Then, if the game is not finished: all saved Tile are erased from the memory, the players are switched and the turn-indicator is updated.
+     * isSelectionPossible is set on true so the next player can click a button again. If the next player is the computer, it here gets its own turn (see clickComputerTile).
+     * After the computer, all buttons are again refreshed.
+     * If the game is finished, the HumanPlayer-score(s) is/are added to the highscores and the end-of-game-message is displayed.
+     * @param e , the event where the nextButton is clicked.
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         updateScoreBoard(score1Label, score2Label);

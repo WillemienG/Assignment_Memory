@@ -13,6 +13,7 @@ public class HumanPlayer extends Player {
      * This method lets a human player pick the two tiles he or she wants to turn. Players.Player has to start over if given coordinates are out-of-bounds or negative or zero.
      * @return a 1-by-2 integer-array with coordinates of tile that has to be turned.
      */
+    @Deprecated //this is not used in the GUI-version of the game, but needs to be there because this class extends the Player-class.
     public int[] pickTiles (int height, int width) {
         Scanner scan = new Scanner(System.in);
         boolean isValidCo = false;

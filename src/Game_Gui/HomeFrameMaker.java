@@ -10,6 +10,11 @@ import java.awt.event.ActionListener;
 
 public class HomeFrameMaker {
 
+    /**This GUI-method makes the home window for the memory-game where all is set up. It consists of:
+     * - difficultyLevelPanel, that contains the JRadioButtons for the difficultyLevels, the JSpinners for a customized game and the JLabels. Only when JRadioButton "E" is selected, the JSpinners are enabled.
+     * - playerModePanel, that contains the JRadioButtons for the playerMode, the JTextFields for the playerNames and the JLabels. Only when JRadioButton "Multiplayer" is selected, the JTextField for player2Name is enabled.
+     * - optionsPanel, expanded with a startButton. This startButton has its own StartButtonListener that starts the game with all needed parameters, read from the previous components.
+     */
     public void makeHomeFrame() {
         JFrame homeFrame = new JFrame("Memory - home");
         homeFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

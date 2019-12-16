@@ -2,8 +2,8 @@ package Players;
 
 public abstract class Player {
 
-    private double playerScore;
-    private String playerName;
+    private double playerScore;     //double that keeps track of the score a player has
+    private String playerName;      //String that saves the name of the player
 
     public Player(double playerScore, String playerName) {
         setPlayerScore(playerScore);
@@ -15,6 +15,7 @@ public abstract class Player {
     public double getPlayerScore() {
         return playerScore;
     }
+
     public void setPlayerName(String playerName) {
         this.playerName = playerName;
     }

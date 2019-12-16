@@ -2,41 +2,14 @@ package Board;
 
 import DifficultyLevel.DifficultyLevel;
 import DifficultyLevel.CustomDifficultyLevel;
-import java.util.InputMismatchException;
-import java.util.Scanner;
 
 public class BoardDimensioner {
 
-    /**
-     * This method determines the dimensions of game board, chosen by player(s).
-     * Players.Player can choose between different difficulty levels or customize the board in method askBoardDimensions(). In that case, the given numbers must fulfill certain conditions, such as be strictly bigger than zero and give an even product.
-     * If conditions are not fulfilled, method starts over again.
-     * @return a 1by2 int-array with the width and height of the gameboard
+    /**This method initializes an interface-object with an object of the DifficultyLevel-enum and this way, gives it the dimensions and nbPairs that are
+     * enclosed in this object. The characteristics are then 'extracted' from the interface and put in an array.
+     * @param difficultyLevel , the DifficultyLevel-object that gives its characteristics to the output
+     * @return boardCharacteristics, an int[]-array that can later on be easily used to get information from.
      */
-    public String askDifficultyLevel() {
-        Scanner scan = new Scanner(System.in);
-        boolean isValidLevel = false;
-        String chosenLevel = "Z";
-        int i = 1;
-        while (!isValidLevel) {
-            try {
-                System.out.println("At which difficulty level would you like to play? A: First level, B: Second level, C: Third level, D: Fourth level, E: Customized");
-                String scannedLevel = scan.next();
-                if (scannedLevel.equals("A") || scannedLevel.equals("B") || scannedLevel.equals("C") || scannedLevel.equals("D") || scannedLevel.equals("E")) {
-                    chosenLevel = scannedLevel;
-                    isValidLevel = true;
-                } else {
-                    System.out.println("Enter one of the possibilities, going from A to E.");
-                }
-            } catch (InputMismatchException ime) {
-                System.out.println("Enter one of the possibilities, going from A to E.");
-                isValidLevel = false;
-            }
-            i = i + 1;
-        }
-        return chosenLevel;
-    }
-
     private int[] returnCharacteristics(DifficultyLevel difficultyLevel) {
         BoardCharacteristics characteristics = difficultyLevel;
         int[] boardCharacteristics = new int[3];
@@ -49,6 +22,12 @@ public class BoardDimensioner {
         return boardCharacteristics;
     }
 
+    /**This method determines boardCharacteristics, depending on the difficultyLevel.
+     * @param difficultyLevel , the main parameter to know which enum-item OR customDifficultyLevel should be called upon.
+     * @param nbRows , the number of rows that is used when a customized board is asked for.
+     * @param nbColumns , the number of columns that is used when a customized board is asked for.
+     * @return int[] boardCharacteristics, an array that contains the height (nbRows), width (nbColumns) and the number of pairs for the playing board.
+     */
     public int[] determineCharacteristics(String difficultyLevel, int nbRows, int nbColumns) {
         BoardCharacteristics characteristics;
         int[] boardCharacteristics = new int[3];
@@ -66,8 +45,7 @@ public class BoardDimensioner {
                 boardCharacteristics = returnCharacteristics(DifficultyLevel.FOURTHLEVEL);
                 return boardCharacteristics;
             case "E":
-                //Only when player chooses a customized board, the askBoardDimensions() gets called. These created values then are used to set width and height
-                characteristics = new CustomDifficultyLevel(nbRows,nbColumns,nbRows*nbColumns/2);
+                characteristics = new CustomDifficultyLevel(nbRows, nbColumns, nbRows * nbColumns / 2);
                 int width = characteristics.getWidth();
                 int height = characteristics.getHeight();
                 int nbPairs = characteristics.getNbPairs();
@@ -82,39 +60,4 @@ public class BoardDimensioner {
                 return boardCharacteristics;
         }
     }
-
-    private int[] askBoardDimensions() {
-        Scanner scan = new Scanner(System.in);
-        boolean isValidNumber = false;
-        boolean isEvenProduct = false;
-        int i = 1;
-        int[] boardDimensions;
-        boardDimensions = new int[2];
-        while (!isValidNumber || !isEvenProduct) {
-            try {
-                System.out.println("Enter number of rows");
-                int height = scan.nextInt();
-                System.out.println("Enter number of columns");
-                int width = scan.nextInt();
-                if (width % 2 != 0 && height % 2 != 0) {
-                    System.out.println("At least one of the numbers must be even in order to make a valid play board. Please try again.");
-                    isEvenProduct = false;
-                } else if (width <= 0 || height <= 0) {
-                    System.out.println("Make sure both values are strictly bigger than zero.");
-                    isValidNumber = false;
-                } else {
-                    isEvenProduct = true;
-                    isValidNumber = true;
-                    boardDimensions[0] = height;
-                    boardDimensions[1] = width;
-                }
-            } catch (InputMismatchException ime) {
-                scan.next();
-                System.out.println("You must enter a non-zero positive integer. Please try again.");
-            }
-            i = i + 1;
-        }
-        return boardDimensions;
-    }
-
 }

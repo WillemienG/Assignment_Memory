@@ -8,6 +8,8 @@ import java.util.List;
 
 public class HighscoreFrameMaker {
 
+    /**This method makes the JFrame highscoreFrame and adds the JTable with the highscores.
+     */
     public void makeHighscoreFrame() {
         JFrame highscoreFrame = new JFrame("Highscores");
         highscoreFrame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
@@ -20,6 +22,11 @@ public class HighscoreFrameMaker {
         highscoreFrame.setVisible(true);
     }
 
+    /**This method makes the JTable highscoreTable. It calls highscoreUpdater.readHighscores() to read all highscores from the highscores.csv file which returns a
+     * List<HighscoreEntry>. Each of these entries is chopped in three separate Strings, reassembled in a String[] per HighscoreEntry and put together in a String[][].
+     * This String[][] is then, line by line, read out in a JTable with appropriate column names.
+     * @return highscoreTable, the JTable that has the highscores.
+     */
     public JTable makeHighscoreTable() {
         HighscoreUpdater highscoreUpdater = new HighscoreUpdater();
         List<HighscoreEntry> highscores = highscoreUpdater.readHighscores();
