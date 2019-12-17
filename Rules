@@ -1,0 +1,38 @@
+Memory - Rules
+
+1. Goal of the game:
+The goal of this game is to match tiles in pairs of 2. The player who found the most pairs, wins.
+
+2. Set-up of the game:
+    - Difficulty level. You can choose between 5 levels:
+        * A: Play board of 2 x 3. No special tiles added.
+        * B: Play board of 4 x 3. 1 shuffle and 1 skip tile are added.
+        * C: Play board of 5 x 6. 2 shuffle and 2 skip tiles are added.
+        * D: Play board of 8 x 8. 3 shuffle and 3 skip tiles are added.
+        * E: Customized, you can choose your own board dimensions. No special tiles are added.
+          Here you have to take care that height * width = even number, in order to make a valid game board.
+    - Player mode:
+        * Multiplayer: play against someone else! Both your scores can be added to the high scores.
+        * Computer: play against the computer. It picks tiles at random. Only your score can be added to the high scores.
+    - Hit 'Start game' and the game is on! At any time in the game, you can take a look at the highscores, the rules or quit the game.
+
+3. Playing a turn:
+    - Play when the text above the board indicates that it's your turn.
+    - Click on a tile to turn it. This tile can have possible values:
+        * A word. This is a normal tile. You can now turn another tile.
+        * "Skip": you have to skip this turn. Click 'Next step'.
+        * "Shuffle": the tiles will be shuffled. Your turn is now over. Click 'Next step'.
+    - Turn another tile. This tile can also have the 3 possible values:
+        * A word. If this word matches the word of your first tile, your score will go up. The tiles are turned for the rest of the game. If they don't match, they'll get turned again. Click 'Next step'.
+        * "Skip": nothing happens. Your turn is now over. Click 'Next step'.
+        * "Shuffle": the tiles will be shuffled. Your turn is now over. Click 'Next step'.
+    - Make sure to click 'Next step' after each turn! This will update your score, switch the player and empty the memory.
+    - What does the computer do?
+        * The computer starts playing when you've hit 'Next step' after your turn.
+        * It picks its tiles at random (so it's not that hard to win ;) ) and follows the same playing pattern as you (skip, shuffle, etc.)
+        * Its chosen tiles will be shown in a separate pop-up window.
+        * The computer does the 'Next step'-clicking itself, so you can immediately start playing when it's done.
+        * The computer's score cannot be added to the highscores.
+    - The game ends when all pairs have been found. Your score will be compared and maybe added to the high scores.
+
+Have fun!
